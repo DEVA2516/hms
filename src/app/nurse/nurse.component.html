@@ -1,0 +1,118 @@
+<div class="admin">
+  <h1>NURSE LOGIN</h1>
+
+  <button pButton label="UPDATE PATIENT REPORT" (click)="display1=true"> </button>
+  <button pButton label="GENERATE BILL" (click)="display = true"> </button>
+  <button pButton label="LOGOUT" routerLink="/home1"> </button>
+</div>
+
+
+<p-sidebar [(visible)]="display" position="right" [showCloseIcon]='true'>
+
+  <ng-template pTemplate="header">
+    <div>ADD BILL</div>
+  </ng-template>
+
+  <ng-template pTemplate="body">
+
+    <form [formGroup]="billForm">
+
+      <div class="form-group">
+        <label for="suppname"> Patient Name </label>
+        <p-dropdown [options]="patientList" optionLabel="patname" name="type" optionValue="patname"
+          placeholder="-- select --" formControlName="patientName"></p-dropdown>
+
+        <div class="error-indicator"
+          *ngIf="billControls['patientName'].invalid && ( billControls['patientName'].dirty || billControls['patientName'].touched)">
+          <span class="error-type" *ngIf="billControls['patientName'].errors?.['required']"> Patient Name is
+            required
+          </span>
+        </div>
+
+      </div>
+
+      <div class="form-group">
+        <label for="amt"> Amount </label>
+        <input type="text" pInputText id="amt" formControlName="amount" placeholder="enter a amount">
+
+        <div class="error-indicator"
+          *ngIf="billControls['amount'].invalid && ( billControls['amount'].dirty || billControls['amount'].touched)">
+          <span class="error-type" *ngIf="billControls['amount'].errors?.['required']"> amount Name is
+            required
+          </span>
+        </div>
+
+      </div>
+
+      <button pButton label="Submit" [disabled]="billForm.invalid" (click)="billSubmit()"></button>
+    </form>
+
+  </ng-template>
+
+</p-sidebar>
+
+<p-sidebar [(visible)]="display1" position="right" [showCloseIcon]='true'>
+
+  <ng-template pTemplate="header">
+    <div>UPDATE PATIENT REPORT</div>
+  </ng-template>
+
+  <ng-template pTemplate="body">
+
+    <form [formGroup]="patForm">
+
+      <div class="form-group">
+        <label for="suppname"> Patient Name </label>
+        <p-dropdown [options]="patientList" optionLabel="patname" name="type" optionValue="patname"
+          placeholder="-- select --" formControlName="patientName"></p-dropdown>
+
+        <div class="error-indicator"
+          *ngIf="patControls['patientName'].invalid && ( patControls['patientName'].dirty || patControls['patientName'].touched)">
+          <span class="error-type" *ngIf="patControls['patientName'].errors?.['required']"> Patient Name is
+            required
+          </span>
+        </div>
+
+      </div>
+
+      <!-- <div class="form-group">
+        <label for="amt"> Summary </label>
+        <input type="text" pInputText id="amt" formControlName="summary" placeholder="enter a Summary">
+
+        <div class="error-indicator"
+          *ngIf="patControls['summary'].invalid && ( patControls['summary'].dirty || patControls['summary'].touched)">
+          <span class="error-type" *ngIf="patControls['summary'].errors?.['required']"> Summary is
+            required
+          </span>
+        </div>
+
+      </div> -->
+
+      <div class="form-group">
+        <label for="amt"> Summary Pdf </label>
+        <input type="file" name="summaryPdf" (change)="onFileChange($event)"
+        accept="application/pdf"
+         id="summaryPdf" style="display: none;" #fileUp>
+        <div class="file-upload">
+          <input type="text" pInputText style="width: 80%;" formControlName="summary">
+          <button pButton label="Browse" (click)="fileUp.click()"></button>
+        </div>
+
+        <div class="error-indicator"
+          *ngIf="patControls['summary'].invalid && ( patControls['summary'].dirty || patControls['summary'].touched)">
+          <span class="error-type" *ngIf="patControls['summary'].errors?.['required']"> Summary is
+            required
+          </span>
+          <span class="error-type" *ngIf="patControls['summary'].errors?.['fileSize']"> 
+            File size should be less than 5MB
+          </span>
+        </div>
+
+      </div>
+
+      <button pButton label="Submit" [disabled]="patForm.invalid" (click)="patSumbit()"></button>
+    </form>
+
+  </ng-template>
+
+</p-sidebar>

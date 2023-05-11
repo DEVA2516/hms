@@ -1,0 +1,253 @@
+<div class="admin">
+  <br>
+  <button pButton label="ADD DEPARTMENT" (click)="display = true"> </button>
+  <button pButton label="ADD SUPPORTING_STAFF" (click)="display1= true"> </button>
+  <button pButton label="ADD DOCTOR" (click)="display2 = true"></button>
+  <button pButton label="UPDATE SALARY STATUS" (click)="display3=true"> </button>
+  <button pButton label="LOGOUT" (click)="logout()"> </button>
+</div>
+<p-sidebar [(visible)]="display" position="right" [showCloseIcon]='true'>
+
+  <ng-template pTemplate="header">
+    <div>Add Department</div>
+  </ng-template>
+
+  <ng-template pTemplate="body">
+    <form [formGroup]="deptForm">
+      <div class="form-group">
+        <label for="deptname"> Department Name</label>
+        <input type="text" name="deptname" pInputText id="deptname" placeholder="enter the department name"
+          formControlName="deptname">
+        <div class="error-indicator"
+          *ngIf="deptControls['deptname'].invalid && ( deptControls['deptname'].dirty || deptControls['deptname'].touched)">
+          <span class="error-type" *ngIf="deptControls['deptname'].errors?.['required']"> Department Name is required
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="deptlocation"> Department Location </label>
+        <input type="text" name="deptlocation" id="deptlocation" pInputText placeholder="enter the department location"
+          required formControlName="deptlocation">
+        <div class="error-indicator"
+          *ngIf="deptControls['deptlocation'].invalid && ( deptControls['deptlocation'].dirty || deptControls['deptlocation'].touched)">
+          <span class="error-type" *ngIf="deptControls['deptlocation'].errors?.['required']"> Department Location is
+            required
+          </span>
+        </div>
+      </div>
+      <button pButton label="Submit" [disabled]="deptForm.invalid" (click)="loginSubmit()"></button>
+    </form>
+  </ng-template>
+
+
+</p-sidebar>
+
+<!-- <p-button type="text" (click)="display = true" icon="pi pi-plus" label="Show"></p-button> -->
+
+<p-sidebar [(visible)]="display1" position="right" [showCloseIcon]='true'>
+
+  <ng-template pTemplate="header">
+    <div>ADD SUPPORTING_STAFF</div>
+  </ng-template>
+
+  <ng-template pTemplate="body">
+
+    <form [formGroup]="suppForm">
+
+      <div class="form-group">
+        <label for="suppname"> Supporting_Staff Name </label>
+        <input type="text" name="suppname" id="suppname" pInputText placeholder="enter the supporting staff name"
+          formControlName="suppname">
+
+        <div class="error-indicator"
+          *ngIf="suppControls['suppname'].invalid && ( suppControls['suppname'].dirty || suppControls['suppname'].touched)">
+          <span class="error-type" *ngIf="suppControls['suppname'].errors?.['required']"> Supporting_Staff Name is
+            required
+          </span>
+        </div>
+
+      </div>
+
+      <label for="suppgender" style="padding-bottom: 8px;"> Gender </label> <br>
+      <input type="radio" name="suppgender" id="suppgender" value="male" formControlName="suppgender"> MALE
+      <input style=" margin-top:10px;margin-left: 20px;" type="radio" name="suppgender" id="suppgender" value="female" formControlName="suppgender">FEMALE
+
+      <div class="form-group" style="margin-top:16px">
+        <label for="suppemail"> Supporting_Staff Email </label>
+        <input type="text" name="suppemail" id="suppemail" pInputText placeholder="enter the supporting staff email"
+          formControlName="suppemail">
+
+        <div class="error-indicator"
+          *ngIf="suppControls['suppemail'].invalid && ( suppControls['suppemail'].dirty || suppControls['suppemail'].touched)">
+          <span class="error-type" *ngIf="suppControls['suppemail'].errors?.['required']">Supporting_Staff Email is
+            required
+          </span>
+          <span class="error-type" *ngIf="suppControls['suppemail'].errors?.['pattern']">Supporting_Staff Email is
+            in invalid pattern
+          </span>
+        </div>
+
+      </div>
+
+
+      <div class="form-group">
+        <label for="supppswd"> Supporting_Staff Password </label>
+        <input type="password" name="supppswd" id="supppswd" pInputText
+          placeholder="enter the supporting staff password" formControlName="supppswd">
+
+        <div class="error-indicator"
+          *ngIf="suppControls['supppswd'].invalid && ( suppControls['supppswd'].dirty || suppControls['supppswd'].touched)">
+          <span class="error-type" *ngIf="suppControls['supppswd'].errors?.['required']"> Supporting_Staff Password is
+            required
+          </span>
+          <span class="error-type" *ngIf="suppControls['supppswd'].errors?.['pattern']"> Supporting_Staff Password is
+            in invalid pattern.
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password"> Type</label>
+        <p-dropdown [options]="types" optionLabel="name" name="type" optionValue="value" placeholder="--select--"
+          formControlName="supptype"></p-dropdown>
+        <div class="error-indicator"
+          *ngIf="suppControls['supptype'].invalid && (suppControls['supptype'].dirty || suppControls['supptype'].touched)">
+          <span class="error-type" *ngIf="suppControls['supptype'].errors?.['required']"> Type is required
+          </span>
+        </div>
+      </div>
+
+      <button pButton label="Submit" [disabled]="suppForm.invalid" (click)="suppSubmit()"></button>
+    </form>
+
+  </ng-template>
+
+</p-sidebar>
+
+<p-sidebar [(visible)]="display2" position="right" [showCloseIcon]='true'>
+
+  <ng-template pTemplate="header">
+    <div>ADD DOCTOR</div>
+  </ng-template>
+
+  <ng-template pTemplate="body">
+    <form action="post" [formGroup]="docForm">
+
+      <div class="form-group">
+        <label for="docname"> Doctor Name </label>
+        <input type="text" name="docname" id="docname"  pInputText placeholder="enter the doctor name" formControlName="docname">
+
+        <div class="error-indicator"
+          *ngIf="docControls['docname'].invalid && (docControls['docname'].dirty || docControls['docname'].touched)">
+          <span class="error-type" *ngIf="docControls['docname'].errors?.['required']"> Doctor Name is required
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="phnnum"> Phone Number </label>
+        <input type="text" name="phnnum" id="phnnum" pInputText placeholder="enter the phone number" required
+          formControlName="phnnum">
+
+        <div class="error-indicator"
+          *ngIf="docControls['phnnum'].invalid && (docControls['phnnum'].dirty || docControls['phnnum'].touched)">
+          <span class="error-type" *ngIf="docControls['phnnum'].errors?.['required']"> Phone Number is required
+          </span>
+          <span class="error-type" *ngIf="docControls['phnnum'].errors?.['pattern']">Please enter a valid phone number
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="docemail"> Email </label>
+        <input type="text" name="docemail" id="docemail" pInputText placeholder="enter the email" required
+          formControlName="docemail">
+
+        <div class="error-indicator"
+          *ngIf="docControls['docemail'].invalid && (docControls['docemail'].dirty || docControls['docemail'].touched)">
+          <span class="error-type" *ngIf="docControls['docemail'].errors?.['required']"> Email is required
+          </span>
+          <span class="error-type" *ngIf="docControls['docemail'].errors?.['pattern']"> Email is in invalid format
+        </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="docpswd"> Password </label>
+        <input type="text" name="docpswd" id="docpswd" pInputText placeholder="enter the password" required
+          formControlName="docpswd">
+
+        <div class="error-indicator"
+          *ngIf="docControls['docpswd'].invalid && (docControls['docpswd'].dirty || docControls['docpswd'].touched)">
+          <span class="error-type" *ngIf="docControls['docpswd'].errors?.['required']"> Password is required
+          </span>
+          <span class="error-type" *ngIf="docControls['docpswd'].errors?.['pattern']"> Password is in invalid format
+        </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="docdept"> Department </label>
+        <input type="text" name="docdept" id="docdept" pInputText placeholder="enter the department" formControlName="docdept">
+
+        <div class="error-indicator"
+          *ngIf="docControls['docdept'].invalid && (docControls['docdept'].dirty || docControls['docdept'].touched)">
+          <span class="error-type" *ngIf="docControls['docdept'].errors?.['required']"> Department is required
+          </span>
+        </div>
+      </div>
+
+      <button pButton label="Submit" [disabled]="docForm.invalid" (click)="docSubmit()"></button>
+    </form>
+  </ng-template>
+</p-sidebar>
+
+<p-sidebar [(visible)]="display3" position="right" [showCloseIcon]='true'>
+
+  <ng-template pTemplate="header">
+    <div>UPDATE SALARY STATUS</div>
+  </ng-template>
+
+  <ng-template pTemplate="body">
+
+    <form [formGroup]="docSalaryForm">
+
+      <div class="form-group">
+        <label for="suppname"> Doctor Name </label>
+        <p-dropdown [options]="doctorList" optionLabel="docname" name="type" optionValue="doctor_id" placeholder="-- select --"
+        formControlName="docId"></p-dropdown>
+
+        <div class="error-indicator"
+          *ngIf="salControls['docId'].invalid && ( salControls['docId'].dirty || salControls['docId'].touched)">
+          <span class="error-type" *ngIf="salControls['docId'].errors?.['required']"> Doctor Name is
+            required
+          </span>
+        </div>
+
+      </div>
+
+      <div class="form-group">
+          <label for="amt"> Amount</label>
+          <input type="text" pInputText id="amt" formControlName="amount" placeholder="enter a amount">
+  
+          <div class="error-indicator"
+            *ngIf="salControls['amount'].invalid && ( salControls['amount'].dirty || salControls['amount'].touched)">
+            <span class="error-type" *ngIf="salControls['amount'].errors?.['required']"> Amount is
+              required
+            </span>
+          </div>
+  
+        </div>
+
+        <div class="form-group">
+          <label for="amt">Salary Credited Date </label>
+          <p-calendar formControlName="creditDate" dateFormat="dd.mm.yy" [showIcon]="true"></p-calendar>
+        </div>
+
+      <button pButton label="Submit" [disabled]="docSalaryForm.invalid" (click)="updateSalary()"></button>
+    </form>
+
+  </ng-template>
+
+</p-sidebar>

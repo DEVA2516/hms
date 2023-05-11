@@ -1,0 +1,21 @@
+/* div{
+    display:flex;
+    flex-direction: column;
+    gap: 20px;
+    width:200px;
+    height: 30px;
+    padding: 10px;
+}
+button:hover{
+    background-color: blue;
+} */
+
+.file-upload{
+    display: flex;
+}
+
+.file-upload .p-button {
+    border-radius: 0px;
+    border-bottom-right-radius: 6px;
+    border-top-right-radius: 6px;
+}

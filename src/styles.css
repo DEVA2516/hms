@@ -1,0 +1,133 @@
+/* You can add global styles to this file, and also import other style files */
+
+body {
+    margin: 0;
+}
+
+input {
+    padding: 5px;
+}
+
+button {
+    background: rgb(238, 80, 167);
+    padding: 5px;
+    color: blanchedalmond;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+}
+
+.p-sidebar {
+    background: rgb(221, 221, 248) !important;
+
+}
+
+.p-inputtext {
+    padding: 9px 10px !important;
+}
+
+.p-sidebar-right {
+    top: 0;
+    right: 0;
+    width: 27rem !important;
+}
+
+.sideheader {
+    height: 50px;
+    background: black;
+}
+
+.p-sidebar .header {
+    height: 50px;
+    background: black;
+}
+
+.p-sidebar-content {
+    height: 100% !important;
+}
+
+.form-group {
+    width: 100%;
+    padding-bottom: 30px;
+    position: relative;
+}
+
+.form-group label {
+    width: 100%;
+    display: block;
+    padding-bottom: 8px;
+    text-transform: capitalize;
+}
+
+.form-group input,
+.form-group p-dropdown>div {
+    width: 100%;
+}
+
+.error-indicator {
+    position: absolute;
+}
+
+.error-type {
+    font-size: 11px;
+    color: red;
+}
+
+.p-button {
+    padding: 9px !important;
+}
+
+.form-name {
+    padding: 5px;
+}
+
+.p-dropdown .p-dropdown-label.p-placeholder {
+    color: #cccccc;
+}
+
+.CustomBtn {
+    padding: 20px 10px !important;
+}
+
+.p-sidebar .p-sidebar-header {
+    display: flex;
+}
+
+.p-sidebar .p-sidebar-header>div {
+    display: flex;
+    font-size: 20px;
+    color: black;
+}
+
+
+.required::after {
+    content: '*';
+    color: red;
+}
+
+.p-sidebar .p-sidebar-content{
+    margin-top: 30px;
+}
+
+.admin .p-button{
+    padding:20px 5px !important;
+}
+
+.admin{
+    margin-left: 25px;
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    gap:20px;
+}
+
+.p-calendar{
+    width: 100% !important;
+}
+
+.p-inputtext.ng-dirty.ng-invalid  {
+    border-color: #e24c4c;
+}

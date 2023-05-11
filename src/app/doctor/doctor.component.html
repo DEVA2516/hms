@@ -1,0 +1,101 @@
+<div class="show_table">
+
+  <div class="admin" style="margin-top: 50px;">
+    <!-- <button pButton label="PERSONAL DETAILS" (click)="display = true"> </button> -->
+    <button pButton label="SALARY STATUS" (click)="isViewSalary = !isViewSalary"> </button>
+    <button pButton label="LOGOUT" routerLink="/home1"> </button>
+  </div>
+
+  <p-sidebar [(visible)]="display" position="right" [showCloseIcon]='true'>
+
+    <ng-template pTemplate="header">
+      <div>PERSONAL DETAILS</div>
+    </ng-template>
+
+    <ng-template pTemplate="body">
+      <form action="post" [formGroup]="docForm">
+
+        <div class="form-group">
+          <label for="docname"> Doctor Name </label>
+          <input type="text" name="docname" id="docname" pInputText placeholder="enter the doctor name"
+            formControlName="docname">
+
+          <div class="error-indicator"
+            *ngIf="docControls['docname'].invalid && (docControls['docname'].dirty || docControls['docname'].touched)">
+            <span class="error-type" *ngIf="docControls['docname'].errors?.['required']"> Doctor Name is required
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="phnnum"> Phone Number </label>
+          <input type="text" name="phnnum" id="phnnum" pInputText placeholder="enter the phone number" required
+            formControlName="phnnum">
+
+          <div class="error-indicator"
+            *ngIf="docControls['phnnum'].invalid && (docControls['phnnum'].dirty || docControls['phnnum'].touched)">
+            <span class="error-type" *ngIf="docControls['phnnum'].errors?.['required']"> Phone Number is required
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="docemail"> Email </label>
+          <input type="text" name="docemail" id="docemail" pInputText placeholder="enter the email" required
+            formControlName="docemail">
+
+          <div class="error-indicator"
+            *ngIf="docControls['docemail'].invalid && (docControls['docemail'].dirty || docControls['docemail'].touched)">
+            <span class="error-type" *ngIf="docControls['docemail'].errors?.['required']"> Email is required
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="docpswd"> Password </label>
+          <input type="text" name="docpswd" id="docpswd" pInputText placeholder="enter the password" required
+            formControlName="docpswd">
+
+          <div class="error-indicator"
+            *ngIf="docControls['docpswd'].invalid && (docControls['docpswd'].dirty || docControls['docpswd'].touched)">
+            <span class="error-type" *ngIf="docControls['docpswd'].errors?.['required']"> Password is required
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="docdept"> Department </label>
+          <input type="text" name="docdept" id="docdept" pInputText placeholder="enter the department"
+            formControlName="docdept">
+
+          <div class="error-indicator"
+            *ngIf="docControls['docdept'].invalid && (docControls['docdept'].dirty || docControls['docdept'].touched)">
+            <span class="error-type" *ngIf="docControls['docdept'].errors?.['required']"> Department is required
+            </span>
+          </div>
+        </div>
+
+        <!-- <button pButton label="Submit" [disabled]="docForm.invalid" (click)="docSubmit()"></button> -->
+      </form>
+    </ng-template>
+  </p-sidebar>
+
+
+  <div class="tabdiv">
+    <table *ngIf="isViewSalary">
+      <tr>
+        <th>DOCTOR ID</th>
+        <th>DOCTOR NAME</th>
+        <th>SALARY</th>
+        <th>CREDITED DATE</th>
+      </tr>
+      <tr *ngFor="let sal of salarys">
+        <td>{{sal.doctor_id}}</td>
+        <td>{{sal.dname}}</td>
+        <td>{{sal.salary}}</td>
+        <td>{{sal.creditDate | date:'dd MMM yy'}}</td>
+
+      </tr>
+    </table>
+  </div>
+</div>

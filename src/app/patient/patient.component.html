@@ -1,0 +1,217 @@
+<div class="show_table">
+
+    <div class="admin" style="margin-top:50px">
+        <button pButton label="PERSONAL DETAILS" (click)="disp = true;getPatientById()"> </button>
+        <button pButton label="DISCHARGE SUMMARY" (click)="isViewSummary = !isViewSummary"></button>
+        <button pButton label="BILLS" (click)="isViewBill=!isViewBill"> </button>
+        <button pButton label="BOOK APPOINTMENT" (click)="isAppoint = true"> </button>
+        <button pButton label="LOGOUT" routerLink="/home1"> </button>
+    </div>
+
+    <div class="tabdiv">
+        <table *ngIf="isViewBill">
+            <tr>
+                <th>BILL NO.</th>
+                <th>PATIENT NAME</th>
+                <th>AMOUNT</th>
+                <th>STATUS</th>
+            </tr>
+            <tr *ngFor="let bill of bills">
+                <td>{{bill._id}}</td>
+                <td>{{bill.username}}</td>
+                <td>{{bill.amount}}</td>
+                <td>{{bill.status == 0 ? 'Not Paid' : 'Paid'}}</td>
+            </tr>
+        </table>
+    </div>
+
+
+<p-sidebar [(visible)]="disp" position="right" [showCloseIcon]='true'>
+
+    <ng-template pTemplate="header">
+        <div>PERSONAL DETAILS</div>
+    </ng-template>
+
+    <ng-template pTemplate="body">
+
+        <form action="post" [formGroup]="patForm">
+
+            <div class="form-group">
+                <label for="patname"> Patient Name</label>
+                <input type="text" name="patname" id="patname" pInputText placeholder="enter the patient name"
+                    formControlName="patname">
+
+                <div class="error-indicator"
+                    *ngIf="patControls['patname'].invalid && ( patControls['patname'].dirty || patControls['patname'].touched)">
+                    <span class="error-type" *ngIf="patControls['patname'].errors?.['required']"> Patient Name is
+                        required
+                    </span>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="address"> Address </label>
+                <input type="text" name="address" id="address" pInputText placeholder="enter the address" required
+                    formControlName="address">
+
+                <div class="error-indicator"
+                    *ngIf="patControls['address'].invalid && ( patControls['address'].dirty || patControls['address'].touched)">
+                    <span class="error-type" *ngIf="patControls['address'].errors?.['required']">Address is
+                        required
+                    </span>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="phnnum"> Phone Number </label>
+                <input type="text" name="phnnum" id="phnnum" pInputText placeholder="enter the phone number" required
+                    formControlName="phnnum">
+
+                <div class="error-indicator"
+                    *ngIf="patControls['phnnum'].invalid && ( patControls['phnnum'].dirty || patControls['phnnum'].touched)">
+                    <span class="error-type" *ngIf="patControls['phnnum'].errors?.['required']"> Phone Number is
+                        required
+                    </span>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="age"> Age </label>
+                <input type="text" name="age" id="age" pInputText placeholder="enter the age" formControlName="age">
+
+                <div class="error-indicator"
+                    *ngIf="patControls['age'].invalid && ( patControls['age'].dirty || patControls['age'].touched)">
+                    <span class="error-type" *ngIf="patControls['age'].errors?.['required']"> Age is
+                        required
+                    </span>
+                </div>
+            </div>
+
+            <label for="suppgender" style="padding-bottom: 8px;"> Gender </label> <br>
+            <input type="radio" name="gender" id="suppgender" value="male" formControlName="gender">MALE
+            <input style=" margin-top:10px;margin-left: 20px;" type="radio" name="gender" id="suppgender" value="female"
+                formControlName="gender">FEMALE
+
+            <div class="error-indicator"
+                *ngIf="patControls['gender'].invalid && ( patControls['gender'].dirty || patControls['gender'].touched)">
+                <span class="error-type" *ngIf="patControls['gender'].errors?.['required']"> Gender is
+                    required
+                </span>
+            </div>
+
+            <div class="form-group" style="margin-top: 20px;">
+
+                <label for="patemail"> Email </label>
+                <input type="text" name="patemail" id="patemail" pInputText placeholder="enter the email" required
+                    formControlName="patemail">
+
+                <div class="error-indicator"
+                    *ngIf="patControls['patemail'].invalid && ( patControls['patemail'].dirty || patControls['patemail'].touched)">
+                    <span class="error-type" *ngIf="patControls['patemail'].errors?.['required']"> Email is
+                        required
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                <label for="patpswd"> Password </label>
+                <input type="text" name="patpswd" id="patpswd" pInputText placeholder="enter the password" required
+                    formControlName="patpswd">
+
+                <div class="error-indicator"
+                    *ngIf="patControls['patpswd'].invalid && ( patControls['patpswd'].dirty || patControls['patpswd'].touched)">
+                    <span class="error-type" *ngIf="patControls['patpswd'].errors?.['required']"> Password is
+                        required
+                    </span>
+                </div>
+            </div>
+            <!-- <button pButton label="Submit" [disabled]="patForm.invalid" (click)="patSubmit()"></button> -->
+        </form>
+    </ng-template>
+
+</p-sidebar>
+
+
+
+<div class="tabdiv">
+    <table *ngIf="isViewSummary">
+        <tr>
+            <th>PATIENT ID</th>
+            <th>PATIENT NAME</th>
+            <th>SUMMARY</th>
+        </tr>
+        <tr *ngFor="let sum of summary">
+            <td>{{sum._id}}</td>
+            <td>{{sum.patname}}</td>
+            <td (click)="download(sum.file)" class="summary-report"><img src="../../assets/pdf.svg" alt="download summary">Report</td>
+        </tr>
+    </table>
+</div>
+
+</div>
+
+<p-sidebar [(visible)]="isAppoint" position="right" [showCloseIcon]='true'>
+
+    <ng-template pTemplate="header">
+        <div>APPOINTMENT DETAILS</div>
+    </ng-template>
+
+    <ng-template pTemplate="body">
+
+        <form action="post" [formGroup]="appForm">
+
+            <div class="form-group">
+                <label for="patname"> Doctor Name</label>
+                <p-dropdown [options]="doctorList" optionLabel="docname" name="type" optionValue="docname" placeholder="-- select --"
+                formControlName="docname"></p-dropdown>
+
+                <div class="error-indicator"
+                    *ngIf="aptControls['docname'].invalid && ( aptControls['docname'].dirty || aptControls['docname'].touched)">
+                    <span class="error-type" *ngIf="aptControls['docname'].errors?.['required']"> Doctor Name is
+                        required
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                <label for="phnnum"> Preferred Time</label>
+
+                <p-calendar formControlName="time" [timeOnly]="true"  [showIcon]="true"></p-calendar>
+
+                <div class="error-indicator"
+                    *ngIf="aptControls['time'].invalid && ( aptControls['time'].dirty || aptControls['time'].touched)">
+                    <span class="error-type" *ngIf="aptControls['time'].errors?.['required']"> Preferred Time is
+                        required
+                    </span>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="phnnum"> Phone Number </label>
+                <input type="text" name="phnnum" id="phnnum" pInputText placeholder="enter the phone number" required
+                    formControlName="phonenum">
+
+                <div class="error-indicator"
+                    *ngIf="aptControls['phonenum'].invalid && ( aptControls['phonenum'].dirty || aptControls['phonenum'].touched)">
+                    <span class="error-type" *ngIf="aptControls['phonenum'].errors?.['required']"> Phone Number is
+                        required
+                    </span>
+                </div>
+            </div>
+
+      
+            <button pButton label="Submit" [disabled]="appForm.invalid" (click)="makeAppointment()"></button>
+        </form>
+    </ng-template>
+
+</p-sidebar>

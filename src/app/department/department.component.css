@@ -1,0 +1,21 @@
+table,th,td{
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 15px;
+    
+}
+.tabdiv{
+    display: flex;
+    justify-content: center;
+}
+table{
+    margin-top: 25px;
+}
+.deptimg{
+    background-image: url('https://tse1.mm.bing.net/th?id=OIP.eslhWAoMfM0H_PKdwamXTAHaFj&pid=Api&P=0');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    aspect-ratio: 2;
+     background-size: cover; 
+      
+}

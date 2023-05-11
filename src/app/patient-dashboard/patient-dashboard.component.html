@@ -1,0 +1,40 @@
+<div class="login">
+    <h1 class="form-name">PATIENT LOGIN</h1>
+    <form  [formGroup]="patientForm">
+
+        <div class="form-group">
+            <label for="username"> User Name </label>
+            <input type="text" name="uname" pInputText formControlName = 'uname'
+                 id="username" required >
+            <div class="error-indicator" 
+                *ngIf="patientForm.controls['uname'].invalid && (patientForm.controls['uname'].dirty || patientForm.controls['uname'].touched)">
+                <span class="error-type"
+                     *ngIf="patientForm.controls['uname'].errors?.['required']"> User Name is required
+                </span>
+                <span class="error-type"
+                     *ngIf="patientForm.controls['uname'].errors?.['pattern']"> please enter a valid email address
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="password"> Password </label>
+            <input type="password" name="upass" pInputText formControlName = 'pname' 
+                id="password" required  
+                >
+            <div class="error-indicator" 
+                *ngIf="patientForm.controls['pname'].invalid && (patientForm.controls['pname'].dirty || patientForm.controls['pname'].touched)">
+                <span class="error-type" 
+                    *ngIf="patientForm.controls['pname'].errors?.['required']"> Password is required</span>
+                <!-- <span class="error-type" 
+                    *ngIf="upass.errors?.['pattern']"> Password atleast 8 characters must contains one uppercase letter,
+                    one lowercase letter,one digit and one special characters</span> -->
+                    <span class="error-type"
+                     *ngIf="patientForm.controls['pname'].errors?.['pattern']"> please enter a valid password with one caps and special character and alpha numeric string
+                </span>
+            </div>
+        </div>
+
+        <button (click)="loginSubmit()" [disabled]="patientForm.invalid" pButton label="Submit"></button>
+    </form>
+</div>

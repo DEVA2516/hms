@@ -1,0 +1,31 @@
+/* div{
+    display:flex;
+    flex-direction: column;
+    gap: 20px;
+    width:200px;
+    height: 30px;
+    padding: 10px;
+}
+button:hover{
+    background-color: blue;
+} */
+
+.show_table{
+    display: flex;
+    gap:50px;
+    align-items: center;
+}
+
+table,th,td{
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 15px;
+    
+}
+.tabdiv{
+    display: flex;
+    justify-content: center;
+}
+table{
+    margin-top: 25px;
+}

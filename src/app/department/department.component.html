@@ -1,0 +1,18 @@
+<div class="deptimg">
+<div class="tabdiv">
+    <!-- <img src="https://tse1.mm.bing.net/th?id=OIP.eslhWAoMfM0H_PKdwamXTAHaFj&pid=Api&P=0" alt="dep"> -->
+
+<table>
+    <tr>
+        <th><h1>SI.NO</h1></th>
+        <th><h1>DEPARTMENT NAME</h1></th>
+        <th><h1>DEPARTMENT LOCATION</h1></th>
+    </tr>
+    <tr *ngFor="let dept of department;index as i">
+        <td><h3>{{i}}</h3></td>
+        <td><h3>{{dept.dname}}</h3></td>
+        <td><h3>{{dept.location}}</h3></td>
+    </tr>
+</table>
+</div>
+</div>

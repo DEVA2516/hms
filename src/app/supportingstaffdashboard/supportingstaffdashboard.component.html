@@ -1,0 +1,48 @@
+<div class="login">
+    <h1>SUPPORTING_STAFF LOGIN</h1>
+   
+    <form action="" [formGroup]="userForm">
+        <div class="form-group">        
+            <label for="username"> User Name </label>
+            <input type="text" pInputText name="uname" formControlName='uname'
+            id="username"> 
+            <div class="error-indicator" 
+                *ngIf="userForm.controls['uname'].invalid && (userForm.controls['uname'].dirty || userForm.controls['uname'].touched)">
+            <span class="error-type" 
+                *ngIf="userForm.controls['uname'].errors?.['required']"> User Name is required</span>
+                <span class="error-type" 
+                *ngIf="userForm.controls['uname'].errors?.['pattern']">Please enter a valid email address</span>
+            </div>
+        </div>
+
+        <div class="form-group">     
+            <label for="password">Password</label>
+            <input type="password" name="upass" pInputText formControlName='pname'
+            id="password" >
+            <div class="error-indicator" 
+                *ngIf="userForm.controls['pname'].invalid && (userForm.controls['pname'].dirty || userForm.controls['pname'].touched)">
+                <span class="error-type" 
+                    *ngIf="userForm.controls['pname'].errors?.['required']"> Password is required
+                 </span>
+                 <span class="error-type" 
+                 *ngIf="userForm.controls['pname'].errors?.['pattern']"> Please enter a valid Password pattern with one caps and special character and numeric string
+              </span>
+            </div>
+        </div>
+
+        <div class="form-group">     
+            <label for="password"> Choose Type:</label>
+            <p-dropdown [options]="types" optionLabel="name" name="type" optionValue="value" placeholder="--select--"
+         formControlName="type"></p-dropdown>
+            <div class="error-indicator" 
+                *ngIf="userForm.controls['type'].invalid && (userForm.controls['type'].dirty || userForm.controls['type'].touched)">
+                <span class="error-type" 
+                    *ngIf="userForm.controls['type'].errors?.['required']"> Type is required
+                 </span>
+            </div>
+        </div>
+
+        <button pButton label="Submit" [disabled]="userForm.invalid" (click)="loginSubmit()"></button>
+    </form>
+</div>
+

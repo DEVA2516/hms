@@ -1,0 +1,10 @@
+.bgi{
+    background-image: url('https://www.nfpa.org/-/media/Images/Blog-Images/Blog-Post-Attachments/NFPA-Today/Okayama_Red_Cross_Hospital.ashx');
+  background-repeat: no-repeat;
+  background-attachment: fixed;  
+  background-size: cover;
+
+}
+h1{
+  text-align: center;
+}

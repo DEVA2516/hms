@@ -1,0 +1,77 @@
+<div class="show_table">
+
+<div class="admin">
+    <h1>BILLER LOGIN</h1>
+
+    <button pButton label="VIEW BILLS" (click)="isViewBill = !isViewBill"> </button>
+    <button pButton label="UPDATE BILL STATUS" (click)="display = true"> </button>
+    <button pButton label="LOGOUT" routerLink="/home1"></button>
+</div>
+
+<div class="tabdiv">
+    <table *ngIf="isViewBill">
+        <tr>
+            <th>BILL.NO</th>
+            <th>PATIENT NAME</th>
+            <th>AMOUNT</th>
+            <th>STATUS</th>
+        </tr>
+        <tr *ngFor="let bill of bills">
+            <td>{{bill.bill_no}}</td>
+            <td>{{bill.patname}}</td>
+            <td>{{bill.amount}}</td>
+            <td>{{bill.status == 0 ? 'Not Paid' : 'Paid'}}</td>
+        </tr>
+    </table>
+    </div>
+</div>
+
+
+<p-sidebar [(visible)]="display" position="right" [showCloseIcon]='true'>
+
+    <ng-template pTemplate="header">
+      <div>ADD BILL</div>
+    </ng-template>
+  
+    <ng-template pTemplate="body">
+  
+      <form [formGroup]="billForm">
+  
+        <div class="form-group">
+          <label for="suppname"> Patient Name </label>
+          <p-dropdown [options]="patientList" optionLabel="p_name" name="type" optionValue="patient_id" placeholder="-- select --"
+          formControlName="patientName"></p-dropdown>
+  
+          <div class="error-indicator"
+            *ngIf="billControls['patientName'].invalid && ( billControls['patientName'].dirty || billControls['patientName'].touched)">
+            <span class="error-type" *ngIf="billControls['patientName'].errors?.['required']"> Patient Name is
+              required
+            </span>
+          </div>
+  
+        </div>
+
+        <div class="form-group">
+            <label for="amt"> Bill No </label>
+            <input type="text" pInputText id="amt" formControlName="billNo" placeholder="enter a billNo">
+    
+            <div class="error-indicator"
+              *ngIf="billControls['billNo'].invalid && ( billControls['billNo'].dirty || billControls['billNo'].touched)">
+              <span class="error-type" *ngIf="billControls['billNo'].errors?.['required']"> Bill Number is
+                required
+              </span>
+            </div>
+    
+          </div>
+
+          <div class="form-group">
+            <label for="amt"> Bill Status </label>
+            <p-checkbox name="Paid" label="paid" [binary]="true" formControlName="status"></p-checkbox>
+          </div>
+  
+        <button pButton label="Submit" [disabled]="billForm.invalid" (click)="updateBill()"></button>
+      </form>
+  
+    </ng-template>
+  
+  </p-sidebar>

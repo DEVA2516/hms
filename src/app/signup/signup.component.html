@@ -1,0 +1,24 @@
+<div class="signup">
+    <h1>SIGNUP FORM </h1>
+    <form class="signupform">
+        <label for="uname">NAME</label>
+        <input type="text" id="uname" name="uname" [(ngModel)]="uname" placeholder="please enter your name"><br>
+        <label for="email">EMAIL</label>
+        <input type="email" id="email" name="email" [(ngModel)]="email" placeholder="please enter your email"><br>
+        <label for="phonenumber">PHONENUMBER</label>
+        <input type="text" id="phonenumber" name="phonenumber"  [(ngModel)]="phonenumber" placeholder="please enter your phonenumber"> <br>
+        <label for="address">ADDRESS</label>
+        <input type="text" id="address" name="address" [(ngModel)]="address" placeholder="please enter your address"> <br>
+        <label for="age">AGE</label>
+        <input type="text" id="age" name="age"  [(ngModel)]="age" placeholder="please enter your age"> <br>
+        <label for="gender">GENDER</label>
+    
+        <input type="radio" id="male" name="gender" value="male" [(ngModel)]="gender" >
+        <label for="male">MALE</label>
+        <input type="radio" id="female" name="gender" value="female" [(ngModel)]="gender">
+        <label for="female">FEMALE</label> <br>
+        <label for="pswd">PASSWORD</label>
+        <input type="password" name="pswd" id="pswd" [(ngModel)]="pswd" placeholder="please enter your password "> <br>
+        <button type="button" value="submit" (click)="signup_submit()">submit</button>
+    </form>
+</div>

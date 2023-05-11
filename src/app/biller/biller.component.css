@@ -1,0 +1,22 @@
+/* .admin{
+    width: 50%;
+} */
+.show_table{
+    display: flex;
+    gap:50px;
+    align-items: center;
+}
+
+table,th,td{
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 15px;
+    
+}
+.tabdiv{
+    display: flex;
+    justify-content: center;
+}
+table{
+    margin-top: 25px;
+}

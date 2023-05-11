@@ -1,0 +1,153 @@
+<h1>RECEPTIONIST LOGIN</h1>
+<div class="admin">
+    <button pButton label="ADD PATIENT " (click)="disp = true"> </button>
+    <!-- <button pButton label="CHECK ROOM AVAILABILITY"> </button> -->
+    <button pButton label="APPOINTMENTS" (click)="isAppointments = true"> </button>
+    <button pButton label="LOGOUT" routerLink="/home1"> </button>
+</div>
+
+<p-sidebar [(visible)]="disp" position="right" [showCloseIcon]='true'>
+
+    <ng-template pTemplate="header">
+        <div>ADD PATIENT</div>
+    </ng-template>
+
+    <ng-template pTemplate="body">
+
+        <form action="post" [formGroup]="patForm">
+            <div class="form-group">
+                <label for="patname"> Patient Name</label>
+                <input type="text" name="patname" id="patname" pInputText placeholder="enter the patient name"
+                    formControlName="patname">
+
+                <div class="error-indicator"
+                    *ngIf="patControls['patname'].invalid && ( patControls['patname'].dirty || patControls['patname'].touched)">
+                    <span class="error-type" *ngIf="patControls['patname'].errors?.['required']"> Patient Name is
+                        required
+                    </span>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="address"> Address </label>
+                <input type="text" name="address" id="address" pInputText placeholder="enter the address" required
+                    formControlName="address">
+
+                <div class="error-indicator"
+                    *ngIf="patControls['address'].invalid && ( patControls['address'].dirty || patControls['address'].touched)">
+                    <span class="error-type" *ngIf="patControls['address'].errors?.['required']">Address is
+                        required
+                    </span>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="phnnum"> Phone Number </label>
+                <input type="text" name="phnnum" id="phnnum" pInputText placeholder="enter the phone number" required
+                    formControlName="phnnum">
+
+                <div class="error-indicator"
+                    *ngIf="patControls['phnnum'].invalid && ( patControls['phnnum'].dirty || patControls['phnnum'].touched)">
+                    <span class="error-type" *ngIf="patControls['phnnum'].errors?.['required']"> Phone Number is
+                        required
+                    </span>
+                    <span class="error-type" *ngIf="patControls['phnnum'].errors?.['pattern']">Please enter a valid phone number
+                    </span>
+                    <span class="error-type" *ngIf="patControls['phnnum'].errors?.['maxlength'] || patControls['phnnum'].errors?.['minlength'] "
+                    >phone number should be 10 digit
+                    </span>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="age"> Age </label>
+                <input type="text" name="age" id="age" pInputText placeholder="enter the age" formControlName="age">
+
+                <div class="error-indicator"
+                    *ngIf="patControls['age'].invalid && ( patControls['age'].dirty || patControls['age'].touched)">
+                    <span class="error-type" *ngIf="patControls['age'].errors?.['required']"> Age is
+                        required
+                    </span>
+                    <span class="error-type" *ngIf="patControls['age'].errors?.['pattern']">Please enter a valid age
+                    </span>
+                    <span class="error-type" *ngIf="patControls['age'].errors?.['maxlength']">Age can be upto 99
+                    </span>
+                </div>
+            </div>
+
+                <label for="suppgender" style="padding-bottom: 8px;"> Gender </label> <br>
+                <input type="radio" name="gender" id="suppgender" value="male" formControlName="gender">MALE
+                <input style=" margin-top:10px;margin-left: 20px;" type="radio" name="gender" id="suppgender" value="female" formControlName="gender">FEMALE
+
+                <div class="error-indicator"
+                    *ngIf="patControls['gender'].invalid && ( patControls['gender'].dirty || patControls['gender'].touched)">
+                    <span class="error-type" *ngIf="patControls['gender'].errors?.['required']"> Gender is
+                        required
+                    </span>
+                </div>
+
+            <div class="form-group" style="margin-top: 20px;">
+
+                <label for="patemail"> Email </label>
+                <input type="text" name="patemail" id="patemail" pInputText placeholder="enter the email" required
+                    formControlName="patemail">
+
+                <div class="error-indicator"
+                    *ngIf="patControls['patemail'].invalid && ( patControls['patemail'].dirty || patControls['patemail'].touched)">
+                    <span class="error-type" *ngIf="patControls['patemail'].errors?.['required']"> Email is
+                        required
+                    </span>
+                    <span class="error-type" *ngIf="patControls['patemail'].errors?.['pattern']"> Email is invalid pattern
+                        
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                <label for="patpswd"> Password </label>
+                <input type="text" name="patpswd" id="patpswd" pInputText placeholder="enter the password" required
+                    formControlName="patpswd">
+
+                <div class="error-indicator"
+                    *ngIf="patControls['patpswd'].invalid && ( patControls['patpswd'].dirty || patControls['patpswd'].touched)">
+                    <span class="error-type" *ngIf="patControls['patpswd'].errors?.['required']"> Password is
+                        required
+                    </span>
+                    <span class="error-type" *ngIf="patControls['patpswd'].errors?.['pattern']"> Password is
+                        invalid pattern
+                    </span>
+                </div>
+            </div>
+
+            <button pButton label="Submit" [disabled]="patForm.invalid" (click)="patSubmit()"></button>
+        </form>
+
+    </ng-template>
+
+
+</p-sidebar>
+
+
+<div class="tabdiv" style="margin-top: 30px;">
+    <table *ngIf="isAppointments">
+        <tr>
+            <th>S NO.</th>
+            <th>PATIENT NAME</th>
+            <th>AMOUNT</th>
+            <th>STATUS</th>
+        </tr>
+        <tr *ngFor="let bill of appointments">
+            <td>{{bill._id}}</td>
+            <td>{{bill.username}}</td>
+            <td>{{bill.amount}}</td>
+            <td>{{bill.status == 0 ? 'Not Paid' : 'Paid'}}</td>
+        </tr>
+    </table>
+</div>

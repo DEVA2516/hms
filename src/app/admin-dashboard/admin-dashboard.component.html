@@ -1,0 +1,35 @@
+<div class="login">
+    <h1>ADMIN LOGIN</h1>
+    <form action="" [formGroup]="adminForm">
+        <div class="form-group">        
+            <label for="username"> User Name </label>
+            <input type="text" pInputText name="uname" formControlName = 'uname' required 
+            id="username"  > 
+            <div class="error-indicator" 
+                *ngIf="adminForm.controls['uname'].invalid && (adminForm.controls['uname'].dirty || adminForm.controls['uname'].touched)">
+            <span class="error-type" 
+                *ngIf="adminForm.controls['uname'].errors?.['required']"> User Name is required</span>
+                <span class="error-type" 
+                *ngIf="adminForm.controls['uname'].errors?.['pattern']"> email  is in invalid pattern</span>
+            </div>
+        </div>
+
+        <div class="form-group">     
+            <label for="password">Password</label>
+            <input type="password" name="upass" pInputText formControlName = 'pname' required 
+            id="password">
+            <div class="error-indicator" 
+                *ngIf="adminForm.controls['pname'].invalid && (adminForm.controls['pname'].dirty || adminForm.controls['pname'].touched)">
+                <span class="error-type" 
+                    *ngIf="adminForm.controls['pname'].errors?.['required']"> Password is required
+                 </span>
+                 <span class="error-type" 
+                *ngIf="adminForm.controls['pname'].errors?.['pattern']"> password is in invalid format </span>
+            </div>
+        </div>
+
+        <button pButton label="Submit" [disabled]="adminForm.invalid" (click)="loginSubmit()"></button>
+    </form>
+
+
+</div>

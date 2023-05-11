@@ -1,0 +1,11 @@
+div{
+    display:flex;
+    flex-direction: column;
+    gap: 20px;
+    width:200px;
+    height: 30px;
+    padding: 10px;
+}
+button:hover{
+    background-color: blue;
+}

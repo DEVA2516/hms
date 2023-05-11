@@ -845,7 +845,7 @@ app.post('/updateAppointMent', async (req, res) => {
 
         // const db = await connectToCluster(uri)
                  
-        let summ =  db.collection('appointment').updateOne({patname : req.body.patname},{
+        let summ =  await db.collection('appointment').updateOne({patname : req.body.patname},{
             $set : {
                 status:true,
                 tokennum:req.body.tokenNo
@@ -881,7 +881,7 @@ app.get('/getAppointMents', async (req, res) => {
 
         // const db = await connectToCluster(uri)
                  
-        let summ =  db.collection('appointment').find({}).toArray()
+        let summ = await db.collection('appointment').find({}).toArray()
 
         if (summ) {
             return res.status(200).json({ data : summ });

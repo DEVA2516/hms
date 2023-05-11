@@ -13,6 +13,7 @@ export class ReceptionistComponent {
   patForm: any;
   appointments:Array<any> = [];
   isAppointments = false;
+  isUpdateAppointment = false;
   
   constructor (private apiService: ApiService, private router: Router){
     this.patForm = new FormGroup({

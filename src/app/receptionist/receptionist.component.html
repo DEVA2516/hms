@@ -135,19 +135,21 @@
 </p-sidebar>
 
 
-<div class="tabdiv" style="margin-top: 30px;">
+<div class="tabdiv">
     <table *ngIf="isAppointments">
         <tr>
             <th>S NO.</th>
+            <th>DOCTOR NAME</th>
             <th>PATIENT NAME</th>
-            <th>AMOUNT</th>
+            <th>PREFERRED TIME</th>
             <th>STATUS</th>
         </tr>
-        <tr *ngFor="let bill of appointments">
-            <td>{{bill._id}}</td>
-            <td>{{bill.username}}</td>
-            <td>{{bill.amount}}</td>
-            <td>{{bill.status == 0 ? 'Not Paid' : 'Paid'}}</td>
+        <tr *ngFor="let bill of appointments,index as i">
+            <td>{{i+1}}</td>
+            <td>{{bill.docname}}</td>
+            <td>{{bill.patname}}</td>
+            <td>{{bill.preferredTime | date:'shortTime' }}</td>
+            <td>{{bill.status == 0 ? 'Pending' : "Accepted"}}</td>
         </tr>
     </table>
 </div>

@@ -215,8 +215,9 @@
 
       <div class="form-group">
         <label for="suppname"> Doctor Name </label>
-        <p-dropdown [options]="doctorList" optionLabel="docname" name="type" optionValue="doctor_id" placeholder="-- select --"
+        <p-dropdown [options]="doctorList" optionLabel="docname" name="type" optionValue="docname" placeholder="-- select --"
         formControlName="docId"></p-dropdown>
+    
 
         <div class="error-indicator"
           *ngIf="salControls['docId'].invalid && ( salControls['docId'].dirty || salControls['docId'].touched)">
@@ -242,7 +243,7 @@
 
         <div class="form-group">
           <label for="amt">Salary Credited Date </label>
-          <p-calendar formControlName="creditDate" dateFormat="dd.mm.yy" [showIcon]="true"></p-calendar>
+          <p-calendar formControlName="creditDate" dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
         </div>
 
       <button pButton label="Submit" [disabled]="docSalaryForm.invalid" (click)="updateSalary()"></button>

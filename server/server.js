@@ -14,7 +14,7 @@ let uri = 'mongodb+srv://Madhu:Madhu%4025@cluster0.agxhj80.mongodb.net/test';
 var db;
 
 (async function () {
-   db =  await connectToCluster(uri)
+   db =  await connectToCluster(uri);
 } )();
 
 
@@ -32,7 +32,7 @@ app.post('/signup',async  (req, res) => {
         .phonenumber, req.body.age, req.body.gender, req.body.email, req.body.pswd], (err, result) => {
             if (err) {
                 console.error(err);
-                return res.status(422).json(    {message:'Something went wrong'});
+                return res.status(422).json(  {message:'Something went wrong'});
             }
 
             console.log(result);
@@ -44,20 +44,26 @@ app.post('/signup',async  (req, res) => {
 
 async function connectToCluster(uri) {
     let mongoClient;
- 
+
     try {
         mongoClient = new MongoClient(uri);
-        console.log('Connecting to MongoDB Atlas cluster...');
         await mongoClient.connect();
+
         console.log('Successfully connected to MongoDB Atlas!');
- 
-         return   mongoClient.db('test');
-         
+
+        return mongoClient.db('test');
+        // db.collection('timeslots').insertMany([
+        //     { duration: '9AM - 11AM', slot: 1 },
+        //     { duration: "11AM - 1PM", slot: 2 },
+        //     { duration: "2PM - 4PM", slot: 3 },
+        //     { duration: "4PM - 6PM", slot: 4 }
+        // ])
+
     } catch (error) {
         console.error('Connection to MongoDB Atlas failed!', error);
         process.exit();
     }
- }
+}
 
 app.get('/department', async (_req, res) => {
     try{
@@ -69,14 +75,11 @@ app.get('/department', async (_req, res) => {
             {
                 success: true,
                 data: dept
-
-              
             }
         );
     } else {
         return res.status(422).json({
             success: false,
-           
         })
     }
 
@@ -88,8 +91,6 @@ app.get('/department', async (_req, res) => {
                 //message: 'login failed'
             }
         )
-    }finally {
-         //db.close()
     }
 })
 
@@ -120,8 +121,6 @@ app.post('/doctorlogin', async (req, res) => {
                 message: 'login failed'
             }
         )
-    }finally {
-        // db.close()
     }
 })
 
@@ -184,8 +183,6 @@ app.post('/supportingstafflogin', async (req, res) => {
                 message: 'login failed'
             }
         )
-    }finally {
-        // db.close()
     }
 })
 
@@ -217,10 +214,7 @@ app.post('/adminlogin', async (req, res) => {
                 message: 'login failed'
             }
         )
-    }finally {
-        // db.close()
     }
-
 })
 
 
@@ -258,16 +252,6 @@ app.post('/addDepartment',async (req, res) => {
        
     })
 
-    app.post('/appointment',async (req, res) => {
-        try {
-            const appointment=await req.body;
-            db.collection("appointment").insertOne({appointment})
-            res.status(200).json({message:"success"})
-        }catch(err){
-            res.status(200).json({message:"failed"})
-        }
-        })
-    
 
 app.post('/addSupportingstaff',async (req,res) => {
     try {
@@ -380,8 +364,6 @@ app.get('/doctor', async (req, res) => {
                 {
                     success: true,
                     data: doctorArr,
-    
-                  
                 }
             );
         } else {
@@ -399,8 +381,6 @@ app.get('/doctor', async (req, res) => {
                     //message: 'login failed'
                 }
             )
-        }finally {
-             //db.close()
         }
     })   
     
@@ -425,9 +405,6 @@ try {
                 {
                     success: true,
                     data: doctorDetails,
-
-    
-                  
                 }
             );
         } else {
@@ -473,8 +450,6 @@ app.get('/patient', async (req, res) => {
                 //message: 'login failed'
             }
         )
-    }finally {
-         //db.close()
     }
 })   
 
@@ -616,8 +591,6 @@ app.get('/getBills', async (req, res) => {
                   //message: 'login failed'
               }
           )
-      }finally {
-           //db.close()
       }
   })
    
@@ -747,20 +720,10 @@ app.post('/updateSummary', upload.single("file"), async (req, res) => {
 
 app.post('/updateSalary', async (req, res) => {
     try {
-        let  saldet= await  db.collection('doctor').aggregate([
-            { $lookup:
-               {
-                 from: 'salary',
-                 localField: 'dname',
-                 foreignField: 'docname',
-                 as: 'saldet'
-               }
-             }
-            ]).toArray()
-    
+        let  saldet = await  db.collection('salary').insertOne({docname:req.body.docId,creditDate:new Date(req.body.creditDate),amount:req.body.amount})
             
             if (saldet) {
-                return res.status(200).json({message: saldet});
+                return res.status(200).json({message: "Salary updated successfully.."});
             } else {
                 return res.status(422).json({message:"error"})
             }
@@ -769,7 +732,7 @@ app.post('/updateSalary', async (req, res) => {
             return res.status(422).json(
                 {
                     success: false,
-                    message:'unable to load doctor details'
+                    message:'unable to update salary'
                     //message: 'login failed'
                 }
             )
@@ -807,18 +770,25 @@ app.get('/getDocSalary', (req, res) => {
 
 app.post('/makeAppointment', async (req, res) => {
     try {
+        const appointments = await db.collection('appointment')
+        .find({ $and: [{ date: new Date(req.body.date) }, { slot: req.body.time.slot }] }).toArray();
+
+        console.log("appointments", appointments);
+
         let summ = await db.collection('appointment').insertOne(
             {
-                 patname: req.body.patname,
-                 docname: req.body.docname,
-                 preferredTime: req.body.time,
-                 phnnum:req.body.phonenum,
-                 status:false,
-                 tokennum:0
+                patname: req.body.patname,
+                docname: req.body.docname,
+                preferredTime: req.body.time.duration,
+                slot: req.body.time.slot,
+                phnnum: req.body.phonenum,
+                date: new Date(req.body.date),
+                status: false,
+                tokennum: appointments.length + 1
             })
 
         if (summ) {
-            return res.status(200).json({ message: 'appointment requested Successfully' });
+            return res.status(200).json({ message: 'Appointment Booked Successfully' });
         }
 
         else {
@@ -834,6 +804,34 @@ app.post('/makeAppointment', async (req, res) => {
             {
                 success: false,
                 message: 'failed to request appointment'
+            }
+        )
+    }
+})
+
+app.get("/getTimeSlots", async (req, res) => {
+
+    try {
+
+    const timeslots = await db.collection('timeslots').find({}).toArray()
+
+        if (timeslots) {
+            return res.status(200).json({ data : timeslots });
+        }
+
+        else {
+            return res.status(422).json({
+                success: false,
+                message: 'unable to get timeslots'
+            })
+        }
+
+    } catch (err) {
+        console.log(err);
+        return res.status(422).json(
+            {
+                success: false,
+                message: 'failed to get timeslots'
             }
         )
     }
@@ -882,6 +880,37 @@ app.get('/getAppointMents', async (req, res) => {
         // const db = await connectToCluster(uri)
                  
         let summ = await db.collection('appointment').find({}).toArray()
+
+        if (summ) {
+            return res.status(200).json({ data : summ });
+        }
+
+        else {
+            return res.status(422).json({
+                success: false,
+                message: 'unable to get appointment'
+            })
+        }
+
+    } catch (err) {
+        console.log(err);
+        return res.status(422).json(
+            {
+                success: false,
+                message: 'failed to get appointment'
+            }
+        )
+    }
+
+})
+
+
+app.get('/getAppointMentsById', async (req, res) => {
+    try {
+
+        // const db = await connectToCluster(uri)
+                 
+        let summ = await db.collection('appointment').find({patname:req.query.id}).toArray()
 
         if (summ) {
             return res.status(200).json({ data : summ });

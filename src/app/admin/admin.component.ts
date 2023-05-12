@@ -24,7 +24,7 @@ export class AdminComponent implements OnInit{
     { id: 2, name: 'NURSE', value: 'nurse' },
     { id: 2, name: 'BILLER', value: 'biller' },
   ]
-  doctorList: any;
+  doctorList: Array<any> = [];
 
   constructor(private apiService: ApiService, private router: Router) {
     this.deptForm = new FormGroup({
@@ -123,7 +123,7 @@ export class AdminComponent implements OnInit{
   getAllDoctors() {
     this.apiService.getDoctor().subscribe({
       next: (res: any) => {
-        this.doctorList = res.data
+        this.doctorList = res.data;
       },
       error: (err: any) => this.apiService.errorToast(err.error.message)
     })

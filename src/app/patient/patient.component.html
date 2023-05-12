@@ -5,6 +5,7 @@
         <button pButton label="DISCHARGE SUMMARY" (click)="isViewSummary = !isViewSummary"></button>
         <button pButton label="BILLS" (click)="isViewBill=!isViewBill"> </button>
         <button pButton label="BOOK APPOINTMENT" (click)="isAppoint = true"> </button>
+        <button pButton label="APPOINTMENT LIST" (click)="isAppointView = !isAppointView"> </button>
         <button pButton label="LOGOUT" routerLink="/home1"> </button>
     </div>
 
@@ -182,9 +183,24 @@
 
             <div class="form-group">
 
-                <label for="phnnum"> Preferred Time</label>
+                <label for="date">Date</label>
 
-                <p-calendar formControlName="time" [timeOnly]="true"  [showIcon]="true"></p-calendar>
+                <p-calendar formControlName="date" inputId="date" [showIcon]="true"></p-calendar>
+
+                <div class="error-indicator"
+                    *ngIf="aptControls['date'].invalid && ( aptControls['date'].dirty || aptControls['date'].touched)">
+                    <span class="error-type" *ngIf="aptControls['date'].errors?.['required']"> Preferred Time is
+                        required
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                <label for="time"> Preferred Time</label>
+
+                <p-dropdown [options]="timeSlotsList"  inputId="time" optionLabel="duration" name="type"  placeholder="-- select --"
+                formControlName="time"></p-dropdown>
 
                 <div class="error-indicator"
                     *ngIf="aptControls['time'].invalid && ( aptControls['time'].dirty || aptControls['time'].touched)">
@@ -215,3 +231,26 @@
     </ng-template>
 
 </p-sidebar>
+
+
+<div class="tabdiv">
+    <table *ngIf="isAppointView">
+        <tr>
+            <th>TOKEN NO</th>
+            <th>PATIENT NAME</th>
+            <th>DOCTOR NAME</th>
+            <th>DATE</th>
+            <th>PREFERRED TIME</th>
+            <th>STATUS</th>
+
+        </tr>
+        <tr *ngFor="let bill of appointmentList">
+            <td>{{bill.tokennum}}</td>
+            <td>{{bill.patname  }}</td>
+            <td>{{bill.docname}}</td>
+            <td>{{bill.date | date:"dd MMM, YYYY"}}</td>
+            <td>{{bill.preferredTime}}</td>
+            <td>{{bill.status ? 'Visited' : 'Not Visited'}}</td>
+        </tr>
+    </table>
+</div>

@@ -20,6 +20,10 @@ export class PatientComponent implements OnInit {
   appForm: FormGroup;
   isAppoint = false
   doctorList: Array<any> = [];
+  timeSlotsList:Array<any> = []
+  appointmentList:Array<any> = []
+
+  isAppointView = false;
 
   constructor(private apiService: ApiService, private router: Router) {
 
@@ -36,6 +40,7 @@ export class PatientComponent implements OnInit {
     this.appForm = new FormGroup({
       docname: new FormControl(null, [Validators.required]),
       time: new FormControl(null, [Validators.required]),
+      date : new FormControl(null, [Validators.required]),
       phonenum : new FormControl(null, [Validators.required])
     })
   }
@@ -53,12 +58,23 @@ export class PatientComponent implements OnInit {
     this.getPatientById();
     this.getSummary();
     this.getAllDoctors();
+    this.getAllTimeSlots();
+    this.getAppointMentsById();
   }
 
   getAllDoctors() {
     this.apiService.getDoctor().subscribe({
       next: (res: any) => {
         this.doctorList = res.data
+      },
+      error: (err: any) => this.apiService.errorToast(err.error.message)
+    })
+  }
+
+  getAllTimeSlots() {
+    this.apiService.getTimeSlots().subscribe({
+      next: (res: any) => {
+        this.timeSlotsList = res.data
       },
       error: (err: any) => this.apiService.errorToast(err.error.message)
     })
@@ -91,10 +107,7 @@ export class PatientComponent implements OnInit {
     this.appForm.value['patname'] = localStorage.getItem("patientName");
     this.apiService.makeAppointment(this.appForm.value).subscribe({
       next: (res: any) => {
-        console.log(res);
-        if (res.success) {
           this.apiService.successToast(res.message)
-        }
       }, error: (err: any) => this.apiService.errorToast(err.error.message)
     })
   }
@@ -112,7 +125,7 @@ export class PatientComponent implements OnInit {
           patemail: res.data.username,
           patpswd: res.data.pswd
         });
-        // this.patForm.get('patemail')?.disable()
+        this.patForm.disable();
       },
       error: (err: any) => this.apiService.errorToast(err.error.message)
     })
@@ -129,6 +142,16 @@ export class PatientComponent implements OnInit {
     })
   }
 
+  getAppointMentsById() {
+    let id = localStorage.getItem('patientName') as string
+    this.apiService.getAppointMentsById(id).subscribe({
+      next: (res: any) => {
+        this.appointmentList = res.data
+      },
+      error: (err: any) => this.apiService.errorToast(err.error.message)
+    })
+  }
+
   download(file:any){
     let a = document.createElement('a');
     a.href = file;
@@ -136,6 +159,7 @@ export class PatientComponent implements OnInit {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+    this.apiService.successToast("Document downloaded successfully...")
   }
   
 

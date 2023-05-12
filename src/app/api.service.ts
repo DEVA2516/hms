@@ -33,6 +33,10 @@ export class ApiService {
     return this.http.get('http://localhost:3000/department')
   }
 
+  getTimeSlots() {
+    return this.http.get('http://localhost:3000/getTimeSlots')
+  }
+
   doctorLogin(data: any) {
     return this.http.post('http://localhost:3000/doctorLogin', data)
   }
@@ -88,6 +92,9 @@ export class ApiService {
     return this.http.get('http://localhost:3000/doctorById?id='+id)
   }
 
+  getAppointMentsById(id:string){
+    return this.http.get('http://localhost:3000/getAppointMentsById?id='+id)
+  }
 
   successToast(message:string) {
     this.messageService.add(

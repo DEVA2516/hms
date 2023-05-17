@@ -1,7 +1,8 @@
 <div class="show_table">
 
   <div class="admin" style="margin-top: 50px;">
-    <!-- <button pButton label="PERSONAL DETAILS" (click)="display = true"> </button> -->
+    <button pButton label="PERSONAL DETAILS" (click)="display = true"> </button>
+    <button pButton label="DISCHARGE SUMMARY" (click)="isViewSummary = !isViewSummary"></button>
     <button pButton label="SALARY STATUS" (click)="isViewSalary = !isViewSalary"> </button>
     <button pButton label="LOGOUT" routerLink="/home1"> </button>
   </div>
@@ -90,12 +91,27 @@
         <th>CREDITED DATE</th>
       </tr>
       <tr *ngFor="let sal of salarys">
-        <td>{{sal.doctor_id}}</td>
-        <td>{{sal.dname}}</td>
-        <td>{{sal.salary}}</td>
-        <td>{{sal.creditDate | date:'dd MMM yy'}}</td>
+        <td>{{docId}}</td>
+        <td>{{sal.docname}}</td>
+        <td>{{sal.amount}}</td>
+        <td>{{sal.creditDate | date:'dd MMM yyyy'}}</td>
 
       </tr>
     </table>
   </div>
+
+  <div class="tabdiv">
+    <table *ngIf="isViewSummary">
+        <tr>
+            <th>PATIENT ID</th>
+            <th>PATIENT NAME</th>
+            <th>SUMMARY</th>
+        </tr>
+        <tr *ngFor="let sum of summary">
+            <td>{{sum._id}}</td>
+            <td>{{sum.patname}}</td>
+            <td (click)="download(sum.file)" class="summary-report"><img src="../../assets/pdf.svg" alt="download summary">Report</td>
+        </tr>
+    </table>
+</div>
 </div>

@@ -88,7 +88,7 @@ export class ApiService {
       return this.http.get('http://localhost:3000/getAppointMents')
   }
 
-  getDoctorById(id:number){
+  getDoctorById(id:string){
     return this.http.get('http://localhost:3000/doctorById?id='+id)
   }
 
@@ -137,8 +137,13 @@ export class ApiService {
 
   }
 
-  getDocSalary(id:number){
+  getDocSalary(id:string){
     return this.http.get('http://localhost:3000/getDocSalary?id='+id)
+  }
+
+  getSummaryList() {
+    return this.http.get('http://localhost:3000/getSummaryList')
+
   }
 
 }

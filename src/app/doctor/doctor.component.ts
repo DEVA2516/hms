@@ -1,20 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { ApiService } from '../api.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { ApiService } from "../api.service";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 
 @Component({
-  selector: 'app-doctor',
-  templateUrl: './doctor.component.html',
-  styleUrls: ['./doctor.component.css']
+  selector: "app-doctor",
+  templateUrl: "./doctor.component.html",
+  styleUrls: ["./doctor.component.css"],
 })
 export class DoctorComponent implements OnInit {
-  docForm: FormGroup
-  username: string = '';
-  password: string = '';
-  display = false
+  docForm: FormGroup;
+  username: string = "";
+  password: string = "";
+  display = false;
   salarys: any;
   isViewSalary = false;
+  docId = "";
+  summary: Array<any> = [];
+  isViewSummary = false;
+  appointmentList: Array<any> = [];
+  isAppointView = false;
 
   constructor(private apiService: ApiService, private router: Router) {
     this.docForm = new FormGroup({
@@ -23,11 +28,14 @@ export class DoctorComponent implements OnInit {
       docemail: new FormControl(null, [Validators.required]),
       docpswd: new FormControl(null, [Validators.required]),
       docdept: new FormControl(null, [Validators.required]),
-    })
+    });
   }
   ngOnInit(): void {
-    this.getDoctorSalaryId()
-    this.getDoctorById()
+    this.getDoctorSalaryId();
+    this.getDoctorById();
+    this.getSummary();
+    this.getAppointMentsById();
+    this.docId = localStorage.getItem("doctorId") ?? "";
   }
 
   get docControls() {
@@ -35,35 +43,58 @@ export class DoctorComponent implements OnInit {
   }
 
   getDoctorById() {
-    let id = Number(localStorage.getItem('doctorId'))
+    let id = String(localStorage.getItem("doctorId"));
     this.apiService.getDoctorById(id).subscribe({
       next: (res: any) => {
         this.docForm.patchValue({
-          docname: res[0].dname,
-          docdept: res[0].dept_name,
-          phnnum: res[0].phn_no,
-          docemail: res[0].email,
-          docpswd: res[0].pswd
+          docname: res.data.docname,
+          docdept: res.data.dept,
+          phnnum: res.data.phnnum,
+          docemail: res.data.username,
+          docpswd: res.data.pswd,
         });
-        // this.patForm.get('patemail')?.disable()
+        this.docForm.disable();
       },
-      error: (err: any) => this.apiService.errorToast(err.error.message)
-    })
+      error: (err: any) => this.apiService.errorToast(err.error.message),
+    });
   }
 
   getDoctorSalaryId() {
-    let id = Number(localStorage.getItem('doctorId'))
+    let id = String(localStorage.getItem("doctorName"));
     this.apiService.getDocSalary(id).subscribe({
       next: (res: any) => {
-        this.salarys = res
-        // this.patForm.get('patemail')?.disable()
+        this.salarys = res.data;
       },
-      error: (err: any) => this.apiService.errorToast(err.error.message)
-    })
+      error: (err: any) => this.apiService.errorToast(err.error.message),
+    });
   }
 
+  download(file: any) {
+    let a = document.createElement("a");
+    a.href = file;
+    a.download = `Report.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    this.apiService.successToast("Document downloaded successfully...");
+  }
 
+  getSummary() {
+    this.apiService.getSummaryList().subscribe({
+      next: (res: any) => {
+        this.summary = res.data;
+      },
+      error: (err: any) => this.apiService.errorToast(err.error.message),
+    });
+  }
 
-
+  getAppointMentsById() {
+    let id = localStorage.getItem("doctorName") as string;
+    this.apiService.getAppointMentsByDoctorId(id).subscribe({
+      next: (res: any) => {
+        this.appointmentList = res.data;
+      },
+      error: (err: any) => this.apiService.errorToast(err.error.message),
+    });
+  }
 }
-

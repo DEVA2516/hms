@@ -32,7 +32,8 @@ doctorForm : FormGroup;
         this.router.navigate(['doctor'])
       }
       this.apiService.successToast(res.message);
-      localStorage.setItem('doctorId',res.id)
+      localStorage.setItem('doctorId',res.data._id)
+      localStorage.setItem("doctorName",res.data.docname)
     },error:(err:any) => this.apiService.errorToast(err.error.message)
   })
 }

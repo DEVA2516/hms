@@ -26,6 +26,28 @@
         </table>
     </div>
 
+    <div class="tabdiv">
+        <table *ngIf="isAppointView">
+            <tr>
+                <th>TOKEN NO</th>
+                <th>PATIENT NAME</th>
+                <th>DOCTOR NAME</th>
+                <th>DATE</th>
+                <th>PREFERRED TIME</th>
+                <th>STATUS</th>
+    
+            </tr>
+            <tr *ngFor="let bill of appointmentList">
+                <td>{{bill.tokennum}}</td>
+                <td>{{bill.patname  }}</td>
+                <td>{{bill.docname}}</td>
+                <td>{{bill.date | date:"dd MMM, YYYY"}}</td>
+                <td>{{bill.preferredTime}}</td>
+                <td>{{bill.status ? 'Visited' : 'Not Visited'}}</td>
+            </tr>
+        </table>
+    </div>
+
 
 <p-sidebar [(visible)]="disp" position="right" [showCloseIcon]='true'>
 
@@ -233,24 +255,4 @@
 </p-sidebar>
 
 
-<div class="tabdiv">
-    <table *ngIf="isAppointView">
-        <tr>
-            <th>TOKEN NO</th>
-            <th>PATIENT NAME</th>
-            <th>DOCTOR NAME</th>
-            <th>DATE</th>
-            <th>PREFERRED TIME</th>
-            <th>STATUS</th>
 
-        </tr>
-        <tr *ngFor="let bill of appointmentList">
-            <td>{{bill.tokennum}}</td>
-            <td>{{bill.patname  }}</td>
-            <td>{{bill.docname}}</td>
-            <td>{{bill.date | date:"dd MMM, YYYY"}}</td>
-            <td>{{bill.preferredTime}}</td>
-            <td>{{bill.status ? 'Visited' : 'Not Visited'}}</td>
-        </tr>
-    </table>
-</div>

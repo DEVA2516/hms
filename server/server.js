@@ -103,7 +103,8 @@ app.post('/doctorlogin', async (req, res) => {
         return res.status(200).json(
             {
                 success: true,
-                message: 'login successfully'
+                message: 'login successfully',
+                data: user
             }
         );
     } else {
@@ -388,16 +389,17 @@ app.get('/doctor', async (req, res) => {
 
 app.get('/doctorById', async (req, res) => {
 try {
-  let doctorDetails = await  db.collection('doctor').aggregate([
-        { $lookup:
-           {
-             from: 'department',
-             localField: 'dept',
-             foreignField: 'dname',
-             as: 'deptDetails'
-           }
-         }
-        ]).toArray()
+  let doctorDetails = await  db.collection('doctor').findOne({_id : new ObjectID(req.query.id)})
+//   .aggregate([
+//         { $lookup:
+//            {
+//              from: 'department',
+//              localField: 'dept',
+//              foreignField: 'dname',
+//              as: 'deptDetails'
+//            }
+//          }
+//         ])
 
         
         if (doctorDetails) {
@@ -482,8 +484,7 @@ app.get('/patientById', async (req, res) => {
                 }
             )
         }
-    }) 
-
+    })
 
 
 function sendmail(email,password,path) {
@@ -686,6 +687,39 @@ app.get('/getSummaryById', async (req, res) => {
 })
 
 
+
+app.get('/getSummaryList', async (req, res) => {
+    try {
+        let summ = await db.collection('summary').find().toArray()
+        summ.map(e => {
+            e['file'] = "data:application/pdf;base64," + e.summary.buffer.toString('base64');
+            return e;
+        })
+
+        if (summ) {
+            return res.status(200).json({ data : summ });
+        }
+        else {
+            return res.status(422).json({
+                success: false,
+                message: 'unable to add',
+
+            })
+        }
+
+    } catch (err) {
+        console.log(err);
+        return res.status(422).json(
+            {
+                success: false,
+                message: 'failed to update summary'
+            }
+        )
+    }
+
+})
+
+
 app.post('/updateSummary', upload.single("file"), async (req, res) => {
     try {
 
@@ -753,19 +787,33 @@ app.post('/updateSalary', async (req, res) => {
 // })
 
 
-app.get('/getDocSalary', (req, res) => {
+app.get('/getDocSalary', async (req, res) => {
 
-    let selectQuery = 'SELECT d.doctor_id,d.dname,s.salary,s.creditDate from doctor d inner join salary s on s.doctor_id = d.doctor_id where d.doctor_id = ?';
+    try {
+
+        const doctorSalary = await db.collection('salary').find({docname:req.query.id}).toArray();
     
-    con.query(selectQuery, [req.query.id],(err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(422).json({message:'Something went wrong'});
+            if (doctorSalary) {
+                return res.status(200).json({ data : doctorSalary });
+            }
+    
+            else {
+                return res.status(422).json({
+                    success: false,
+                    message: 'unable to get doc salary'
+                })
+            }
+    
+        } catch (err) {
+            console.log(err);
+            return res.status(422).json(
+                {
+                    success: false,
+                    message: 'failed to get  doc salary'
+                }
+            )
         }
-
-        console.log(result);
-        return res.status(200).json(result);
-    })
+ 
 })
 
 app.post('/makeAppointment', async (req, res) => {
@@ -934,6 +982,39 @@ app.get('/getAppointMentsById', async (req, res) => {
     }
 
 })
+
+
+app.get('/getAppointMentsByDoctorId', async (req, res) => {
+    try {
+
+        // const db = await connectToCluster(uri)
+                 
+        let summ = await db.collection('appointment').find({docname:req.query.id}).toArray()
+
+        if (summ) {
+            return res.status(200).json({ data : summ });
+        }
+
+        else {
+            return res.status(422).json({
+                success: false,
+                message: 'unable to get appointment'
+            })
+        }
+
+    } catch (err) {
+        console.log(err);
+        return res.status(422).json(
+            {
+                success: false,
+                message: 'failed to get appointment'
+            }
+        )
+    }
+
+})
+
+
 
 
 

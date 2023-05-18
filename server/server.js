@@ -984,4 +984,37 @@ app.get('/getAppointMentsById', async (req, res) => {
 })
 
 
+app.get('/getAppointMentsByDoctorId', async (req, res) => {
+    try {
+
+        // const db = await connectToCluster(uri)
+                 
+        let summ = await db.collection('appointment').find({docname:req.query.id}).toArray()
+
+        if (summ) {
+            return res.status(200).json({ data : summ });
+        }
+
+        else {
+            return res.status(422).json({
+                success: false,
+                message: 'unable to get appointment'
+            })
+        }
+
+    } catch (err) {
+        console.log(err);
+        return res.status(422).json(
+            {
+                success: false,
+                message: 'failed to get appointment'
+            }
+        )
+    }
+
+})
+
+
+
+
 

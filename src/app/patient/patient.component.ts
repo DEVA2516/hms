@@ -108,6 +108,7 @@ export class PatientComponent implements OnInit {
     this.apiService.makeAppointment(this.appForm.value).subscribe({
       next: (res: any) => {
           this.apiService.successToast(res.message)
+          this.getAppointMentsById();
       }, error: (err: any) => this.apiService.errorToast(err.error.message)
     })
   }

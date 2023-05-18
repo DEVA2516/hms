@@ -4,6 +4,7 @@
     <button pButton label="PERSONAL DETAILS" (click)="display = true"> </button>
     <button pButton label="DISCHARGE SUMMARY" (click)="isViewSummary = !isViewSummary"></button>
     <button pButton label="SALARY STATUS" (click)="isViewSalary = !isViewSalary"> </button>
+    <button pButton label="APPOINTMENT LIST" (click)="isAppointView = !isAppointView"> </button>
     <button pButton label="LOGOUT" routerLink="/home1"> </button>
   </div>
 
@@ -114,4 +115,27 @@
         </tr>
     </table>
 </div>
+
+<div class="tabdiv">
+  <table *ngIf="isAppointView">
+      <tr>
+          <th>TOKEN NO</th>
+          <th>PATIENT NAME</th>
+          <th>DOCTOR NAME</th>
+          <th>DATE</th>
+          <th>PREFERRED TIME</th>
+          <th>STATUS</th>
+
+      </tr>
+      <tr *ngFor="let bill of appointmentList">
+          <td>{{bill.tokennum}}</td>
+          <td>{{bill.patname  }}</td>
+          <td>{{bill.docname}}</td>
+          <td>{{bill.date | date:"dd MMM, YYYY"}}</td>
+          <td>{{bill.preferredTime}}</td>
+          <td>{{bill.status ? 'Visited' : 'Not Visited'}}</td>
+      </tr>
+  </table>
+</div>
+
 </div>

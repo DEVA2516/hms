@@ -96,6 +96,10 @@ export class ApiService {
     return this.http.get('http://localhost:3000/getAppointMentsById?id='+id)
   }
 
+  getAppointMentsByDoctorId(id:string){
+    return this.http.get('http://localhost:3000/getAppointMentsByDoctorId?id='+id)
+  }
+
   successToast(message:string) {
     this.messageService.add(
       { severity: 'success', detail: message });

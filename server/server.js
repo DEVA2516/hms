@@ -3,8 +3,9 @@ var cors = require('cors');
 var nodemailer = require('nodemailer')
 var app = express();
 var { MongoClient, Binary,ObjectID } = require('mongodb');
-const multer = require('multer')
-var doctorController = require('./controllers/doctorController.js');
+const multer = require('multer');
+var jwt = require("jsonwebtoken");
+var { expressjwt: jwtVerify } = require("express-jwt");
 
 app.use(cors());
 app.use(express.json());
@@ -13,33 +14,21 @@ app.listen(3000, () => console.log('server is running'))
 let uri = 'mongodb+srv://Madhu:Madhu%4025@cluster0.agxhj80.mongodb.net/test';
 var db;
 
+app.use(
+    jwtVerify({
+        secret: "iiissss",
+        algorithms: ["HS256"],
+    }).unless({ path: ["/department", "/doctorlogin", "/patientLogin", "/validateEmail", "/valTokenPass"] })
+);
+
+var jwt_key = "iiissss";
+
 (async function () {
    db =  await connectToCluster(uri);
 } )();
 
 
 const upload = multer({})
-
-
-app.post('/signup',async  (req, res) => {
-    console.log(req.body);
-
-    db.collection('user').insertOne(req.body)
-
-    let insertQuery = 'INSERT INTO patient (p_name,address,phn_no,age,gender,email,pswd) values (?,?,?,?,?,?,?)';
-
-    con.query(insertQuery, [req.body.uname, req.body.address, req.body
-        .phonenumber, req.body.age, req.body.gender, req.body.email, req.body.pswd], (err, result) => {
-            if (err) {
-                console.error(err);
-                return res.status(422).json(  {message:'Something went wrong'});
-            }
-
-            console.log(result);
-            return res.status(200).send('Inserted Successfullyy');
-
-        })
-})
 
 
 async function connectToCluster(uri) {
@@ -52,18 +41,13 @@ async function connectToCluster(uri) {
         console.log('Successfully connected to MongoDB Atlas!');
 
         return mongoClient.db('test');
-        // db.collection('timeslots').insertMany([
-        //     { duration: '9AM - 11AM', slot: 1 },
-        //     { duration: "11AM - 1PM", slot: 2 },
-        //     { duration: "2PM - 4PM", slot: 3 },
-        //     { duration: "4PM - 6PM", slot: 4 }
-        // ])
-
     } catch (error) {
         console.error('Connection to MongoDB Atlas failed!', error);
         process.exit();
     }
 }
+
+// common apis
 
 app.get('/department', async (_req, res) => {
     try{
@@ -125,12 +109,22 @@ app.post('/doctorlogin', async (req, res) => {
     }
 })
 
-app.post('/patientlogin', async (req, res) => {
+app.post('/patientLogin', async (req, res) => {
     try{
       let user = await db.collection('patient').findOne({$and:[{'username':req.body.uname},{'pswd':req.body.pname}]})
       console.log(user);
 
+
       if (user) {
+
+        const payload = {
+            id : user._id,
+            userName : user.patname,
+            email: user.username
+         }
+    
+          user['token'] = jwt.sign(payload,jwt_key)
+
         return res.status(200).json(
             {
                 success: true,
@@ -157,6 +151,7 @@ app.post('/patientlogin', async (req, res) => {
         // db.close()
     }
 })
+
 app.post('/supportingstafflogin', async (req, res) => {
     try{
       let user = await db.collection('suppstaff').findOne({$and:[{'username':req.body.uname},{'pswd':req.body.pname},{'type':req.body.type}]})
@@ -390,17 +385,6 @@ app.get('/doctor', async (req, res) => {
 app.get('/doctorById', async (req, res) => {
 try {
   let doctorDetails = await  db.collection('doctor').findOne({_id : new ObjectID(req.query.id)})
-//   .aggregate([
-//         { $lookup:
-//            {
-//              from: 'department',
-//              localField: 'dept',
-//              foreignField: 'dname',
-//              as: 'deptDetails'
-//            }
-//          }
-//         ])
-
         
         if (doctorDetails) {
             return res.status(200).json(
@@ -456,11 +440,13 @@ app.get('/patient', async (req, res) => {
 })   
 
 
+// patient apis
+
 app.get('/patientById', async (req, res) => {
     try { 
-        let patArr = await db.collection('patient').findOne({_id:new ObjectID(req.query.id)});
+        let patArr = await db.collection('patient').findOne({_id:new ObjectID(req.auth.id)});
 
-        console.log("patientById",patArr,req.query);
+        console.log("patientById",patArr,req.auth);
     
         if (patArr) {
             return res.status(200).json(
@@ -484,6 +470,95 @@ app.get('/patientById', async (req, res) => {
                 }
             )
         }
+    })
+
+    app.get('/getSummaryById', async (req, res) => {
+        try {
+            let summ = await db.collection('summary').find({ patname: req.auth.userName }).toArray()
+            summ.map(e => {
+                e['file'] = "data:application/pdf;base64," + e.summary.buffer.toString('base64');
+                return e;
+            })
+    
+            if (summ) {
+                return res.status(200).json({ data : summ });
+            }
+            else {
+                return res.status(422).json({
+                    success: false,
+                    message: 'unable to add',
+    
+                })
+            }
+    
+        } catch (err) {
+            console.log(err);
+            return res.status(422).json(
+                {
+                    success: false,
+                    message: 'failed to update summary'
+                }
+            )
+        }
+    
+    })
+
+    app.get('/getBillById', async (req, res) => {
+
+        try{
+            let bills = await  db.collection('bill').find({username:req.auth.userName}).toArray()
+    
+                console.log("bills by id -->",bills);
+      
+            if (bills) {
+              return res.status(200).json(
+                  {
+                      success: true,
+                      data: bills
+                  }
+              );
+          } else {
+              return res.status(422).json({
+                  success: false,
+                 
+              })
+          }
+      
+          }catch (err){
+              console.log(err);
+              return res.status(422).json(
+                  {
+                      success: false,
+                  }
+              )
+                }
+    })
+
+    app.get('/getAppointMentsById', async (req, res) => {
+        try {
+            let summ = await db.collection('appointment').find({patname:req.auth.userName}).toArray()
+    
+            if (summ) {
+                return res.status(200).json({ data : summ });
+            }
+    
+            else {
+                return res.status(422).json({
+                    success: false,
+                    message: 'unable to get appointment'
+                })
+            }
+    
+        } catch (err) {
+            console.log(err);
+            return res.status(422).json(
+                {
+                    success: false,
+                    message: 'failed to get appointment'
+                }
+            )
+        }
+    
     })
 
 
@@ -596,95 +671,16 @@ app.get('/getBills', async (req, res) => {
   })
    
 
-app.get('/getBillById', async (req, res) => {
 
-    try{
-        let bills = await  db.collection('bill').find({username:req.query.id})
-        // .aggregate([
-        //     { $lookup:
-        //        {
-        //          from: 'patient',
-        //          localField: 'username',
-        //          foreignField: '_id',
-        //          as: 'patient'
-        //        }
-        //      }
-        //     ]).
-            .toArray()
-
-            console.log("bills by id -->",bills);
-  
-        if (bills) {
-          return res.status(200).json(
-              {
-                  success: true,
-                  data: bills
-              }
-          );
-      } else {
-          return res.status(422).json({
-              success: false,
-             
-          })
-      }
-  
-      }catch (err){
-          console.log(err);
-          return res.status(422).json(
-              {
-                  success: false,
-                  //message: 'login failed'
-              }
-          )
-            }
-})
 
 app.post('/updateBillStatus', (req, res) => {
    
     let insertQuery = 'Update bill set status = ? where bill_no = ?';
 
-    // con.query(insertQuery,[req.body.status,req.body.billNo] ,(err, result) => {
-    //     if (err) {
-    //         console.error(err);
-    //         return res.status(422).json({message:'Something went wrong'});
-    //     }
-
-    //     console.log(result);
-    //     return res.status(200).json({message:'Bill Updated Successfully'});
-    // })
 })
 
 
-app.get('/getSummaryById', async (req, res) => {
-    try {
-        let summ = await db.collection('summary').find({ patname: req.query.id }).toArray()
-        summ.map(e => {
-            e['file'] = "data:application/pdf;base64," + e.summary.buffer.toString('base64');
-            return e;
-        })
 
-        if (summ) {
-            return res.status(200).json({ data : summ });
-        }
-        else {
-            return res.status(422).json({
-                success: false,
-                message: 'unable to add',
-
-            })
-        }
-
-    } catch (err) {
-        console.log(err);
-        return res.status(422).json(
-            {
-                success: false,
-                message: 'failed to update summary'
-            }
-        )
-    }
-
-})
 
 
 
@@ -773,18 +769,6 @@ app.post('/updateSalary', async (req, res) => {
         }
     })
    
-    // let insertQuery = 'INSERT INTO salary (doctor_id,salary,creditDate) VALUES (?,?,?)';
-
-    // con.query(insertQuery,[req.body.docId,req.body.amount,req.body.creditDate] ,(err, result) => {
-    //     if (err) {
-    //         console.error(err);
-    //         return res.status(422).json({message:'Something went wrong'});
-    //     }
-
-    //     console.log(result);
-    //     return res.status(200).json({message:'Salary Updated Successfully'});
-    // })
-// })
 
 
 app.get('/getDocSalary', async (req, res) => {
@@ -925,40 +909,7 @@ app.post('/updateAppointMent', async (req, res) => {
 app.get('/getAppointMents', async (req, res) => {
     try {
 
-        // const db = await connectToCluster(uri)
-                 
         let summ = await db.collection('appointment').find({}).toArray()
-
-        if (summ) {
-            return res.status(200).json({ data : summ });
-        }
-
-        else {
-            return res.status(422).json({
-                success: false,
-                message: 'unable to get appointment'
-            })
-        }
-
-    } catch (err) {
-        console.log(err);
-        return res.status(422).json(
-            {
-                success: false,
-                message: 'failed to get appointment'
-            }
-        )
-    }
-
-})
-
-
-app.get('/getAppointMentsById', async (req, res) => {
-    try {
-
-        // const db = await connectToCluster(uri)
-                 
-        let summ = await db.collection('appointment').find({patname:req.query.id}).toArray()
 
         if (summ) {
             return res.status(200).json({ data : summ });
@@ -987,8 +938,6 @@ app.get('/getAppointMentsById', async (req, res) => {
 app.get('/getAppointMentsByDoctorId', async (req, res) => {
     try {
 
-        // const db = await connectToCluster(uri)
-                 
         let summ = await db.collection('appointment').find({docname:req.query.id}).toArray()
 
         if (summ) {

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import jwtDecode from 'jwt-decode';
 
 @Component({
   selector: 'app-patient',
@@ -20,8 +21,14 @@ export class PatientComponent implements OnInit {
   appForm: FormGroup;
   isAppoint = false
   doctorList: Array<any> = [];
-  timeSlotsList:Array<any> = []
-  appointmentList:Array<any> = []
+  timeSlotsList:Array<any> = [];
+  appointmentList:Array<any> = [];
+  userDetails = {
+    id:"",
+    userName:"",
+    email:"",
+    iat:0
+  }
 
   isAppointView = false;
 
@@ -54,6 +61,16 @@ export class PatientComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    const token = localStorage.getItem('token');
+
+
+    if(token) {
+      const deToken = jwtDecode<any>(token);
+      console.log(deToken);
+      this.userDetails = deToken;
+    }
+
     this.getBills();
     this.getPatientById();
     this.getSummary();
@@ -81,8 +98,7 @@ export class PatientComponent implements OnInit {
   }
   
   getBills() {
-    let id = String(localStorage.getItem('patientName'))
-    this.apiService.getBillById(id).subscribe({
+    this.apiService.getBillById().subscribe({
       next: (res: any) => {
         this.bills = res.data
         console.log(res);
@@ -104,7 +120,7 @@ export class PatientComponent implements OnInit {
   }
 
   makeAppointment() {
-    this.appForm.value['patname'] = localStorage.getItem("patientName");
+    this.appForm.value['patname'] = this.userDetails.userName;
     this.apiService.makeAppointment(this.appForm.value).subscribe({
       next: (res: any) => {
           this.apiService.successToast(res.message)
@@ -114,8 +130,7 @@ export class PatientComponent implements OnInit {
   }
 
   getPatientById() {
-    let id = String(localStorage.getItem('patientId'))
-    this.apiService.getPatientById(id).subscribe({
+    this.apiService.getPatientById().subscribe({
       next: (res: any) => {
         this.patForm.patchValue({
           patname: res.data.patname,
@@ -133,8 +148,7 @@ export class PatientComponent implements OnInit {
   }
 
   getSummary() {
-    let id = localStorage.getItem('patientName') as string
-    this.apiService.getSummaryById(id).subscribe({
+    this.apiService.getSummaryById().subscribe({
       next: (res: any) => {
       
         this.summary = res.data
@@ -144,8 +158,7 @@ export class PatientComponent implements OnInit {
   }
 
   getAppointMentsById() {
-    let id = localStorage.getItem('patientName') as string
-    this.apiService.getAppointMentsById(id).subscribe({
+    this.apiService.getAppointMentsById().subscribe({
       next: (res: any) => {
         this.appointmentList = res.data
       },
@@ -161,6 +174,11 @@ export class PatientComponent implements OnInit {
     a.click();
     document.body.removeChild(a);
     this.apiService.successToast("Document downloaded successfully...")
+  }
+
+  logout() {
+    localStorage.clear();
+    this.router.navigate(['home1']);
   }
   
 

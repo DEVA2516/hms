@@ -76,8 +76,8 @@ export class ApiService {
 
   
 
-  getPatientById(id:string){
-    return this.http.get('http://localhost:3000/patientById?id='+id)
+  getPatientById(){
+    return this.http.get('http://localhost:3000/patientById')
   }
 
   getDoctor(){
@@ -92,8 +92,8 @@ export class ApiService {
     return this.http.get('http://localhost:3000/doctorById?id='+id)
   }
 
-  getAppointMentsById(id:string){
-    return this.http.get('http://localhost:3000/getAppointMentsById?id='+id)
+  getAppointMentsById(){
+    return this.http.get('http://localhost:3000/getAppointMentsById')
   }
 
   getAppointMentsByDoctorId(id:string){
@@ -118,16 +118,16 @@ export class ApiService {
     return this.http.get('http://localhost:3000/getBills')
   }
 
-  getBillById(id:string){
-    return this.http.get('http://localhost:3000/getBillById?id='+id)
+  getBillById(){
+    return this.http.get('http://localhost:3000/getBillById')
   }
 
   updateBill(data:any){
     return this.http.post('http://localhost:3000/updateBillStatus', data)
   }
 
-  getSummaryById(id:string){
-    return this.http.get('http://localhost:3000/getSummaryById?id='+id)
+  getSummaryById(){
+    return this.http.get('http://localhost:3000/getSummaryById')
   }
 
   updateSummary(data:any){

@@ -2,31 +2,23 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AboutusComponent } from './aboutus/aboutus.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
-import { AdminComponent } from './admin/admin.component';
 import { BillingDashboardComponent } from './billing-dashboard/billing-dashboard.component';
 import { ContactComponent } from './contact/contact.component';
 import { DepartmentComponent } from './department/department.component';
 import { DoctorDashboardComponent } from './doctor-dashboard/doctor-dashboard.component';
-import { DoctorComponent } from './doctor/doctor.component';
 import { GalleryComponent } from './gallery/gallery.component';
 import { HomeComponent  } from './home/home.component';
-import { LoginComponent } from './login/login.component';
-import { NurseComponent } from './nurse/nurse.component';
 import { PatientDashboardComponent } from './patient-dashboard/patient-dashboard.component';
-import { PatientComponent } from './patient/patient.component';
-import { ReceptionistComponent } from './receptionist/receptionist.component';
-import { ResetPswdComponent } from './reset-pswd/reset-pswd.component';
 import { SignupComponent } from './signup/signup.component';
-import { SupportingStaffComponent } from './supporting-staff/supporting-staff.component';
 import { SupportingstaffdashboardComponent } from './supportingstaffdashboard/supportingstaffdashboard.component';
 import { BillerComponent } from './biller/biller.component';
 import { Home1Component } from './home1/home1.component';
-import { AppointmentComponent } from './appointment/appointment.component';
 
 const routes: Routes = [
   {
-    path:'login',
-    component:LoginComponent
+    path:"",
+    redirectTo:"home1",
+    pathMatch:"full"
   },
   {
     path:'signup',
@@ -73,32 +65,20 @@ const routes: Routes = [
     component: DepartmentComponent,
   },
   {
+    path:"admin",
+    loadChildren:() => import("./admin/admin.module")
+  },
+  {
     path: 'doctor',
-    component: DoctorComponent,
-  },
-  {
-    path: 'supporting-staff',
-    component: SupportingStaffComponent,
-  },
-  {
-    path: 'admin',
-    component: AdminComponent,
+    loadChildren:() => import("./doctor/doctor.module")
   },
   {
     path: 'patient',
-    component: PatientComponent,
+    loadChildren:() => import("./patient/patient.module")
   },
   {
-    path: 'nurse',
-    component: NurseComponent,
-  },
-  {
-    path: 'receptionist',
-    component: ReceptionistComponent,
-  },
-  {
-    path: 'reset-pass',
-    component: ResetPswdComponent,
+    path :"supporting",
+    loadChildren:() => import("./supporting-staff/supporting-staff.module")
   },
   {
     path:'biller',
@@ -108,10 +88,7 @@ const routes: Routes = [
     path:'home1',
     component:Home1Component,
   },
-  {
-    path:'appointment',
-    component:AppointmentComponent,
-  }
+
 
   
 ];

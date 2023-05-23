@@ -29,6 +29,7 @@ this.patientForm = new FormGroup({
         if (res.success) {
           localStorage.setItem('patientId',res.data._id)
           localStorage.setItem("patientName",res.data.patname)
+          localStorage.setItem("token",res.data.token)
           this.router.navigate(['patient'])
         }
         this.apiService.successToast(res.message)

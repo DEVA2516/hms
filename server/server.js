@@ -343,7 +343,7 @@ app.post('/addPatient',async (req,res) => {
             return res.status(422).json(
                 {
                     success: false,
-                    message: 'failed to add doctor'
+                    message: 'failed to add patient'
                 }
             )
         }

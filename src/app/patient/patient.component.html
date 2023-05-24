@@ -207,7 +207,7 @@
 
                 <label for="date">Date</label>
 
-                <p-calendar formControlName="date" inputId="date" [showIcon]="true"></p-calendar>
+                <p-calendar formControlName="date" [minDate]="minDate" inputId="date" [showIcon]="true"></p-calendar>
 
                 <div class="error-indicator"
                     *ngIf="aptControls['date'].invalid && ( aptControls['date'].dirty || aptControls['date'].touched)">

@@ -88,16 +88,16 @@ export class ApiService {
       return this.http.get('http://localhost:3000/getAppointMents')
   }
 
-  getDoctorById(id:string){
-    return this.http.get('http://localhost:3000/doctorById?id='+id)
+  getDoctorById(){
+    return this.http.get('http://localhost:3000/doctorById')
   }
 
   getAppointMentsById(){
     return this.http.get('http://localhost:3000/getAppointMentsById')
   }
 
-  getAppointMentsByDoctorId(id:string){
-    return this.http.get('http://localhost:3000/getAppointMentsByDoctorId?id='+id)
+  getAppointMentsByDoctorId(){
+    return this.http.get('http://localhost:3000/getAppointMentsByDoctorId')
   }
 
   successToast(message:string) {
@@ -141,8 +141,8 @@ export class ApiService {
 
   }
 
-  getDocSalary(id:string){
-    return this.http.get('http://localhost:3000/getDocSalary?id='+id)
+  getDocSalary(){
+    return this.http.get('http://localhost:3000/getDocSalary')
   }
 
   getSummaryList() {

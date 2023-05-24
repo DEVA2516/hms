@@ -30,8 +30,8 @@ export class MiddlewareInterceptor implements HttpInterceptor {
         () => {},
         (err: any) => {
           if (err instanceof HttpErrorResponse) {
-            if (err.status) {
-              this.apiService.errorToast(err.error?.message);
+            if (err.status == 0) {
+              this.apiService.errorToast("Connection Refused...");
             } else {
             }
           }

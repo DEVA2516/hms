@@ -3,7 +3,7 @@
     <button pButton label="ADD PATIENT " (click)="disp = true"> </button>
     <!-- <button pButton label="CHECK ROOM AVAILABILITY"> </button> -->
     <!-- <button pButton label="APPOINTMENTS" (click)="isAppointments = true"> </button> -->
-    <button pButton label="LOGOUT" routerLink="/home1"> </button>
+    <button pButton label="LOGOUT" (click)="logout()"> </button>
 </div>
 
 <p-sidebar [(visible)]="disp" position="right" [showCloseIcon]='true'>

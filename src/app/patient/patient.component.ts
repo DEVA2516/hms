@@ -29,6 +29,7 @@ export class PatientComponent implements OnInit {
     email:"",
     iat:0
   }
+  minDate:Date = new Date();
 
   isAppointView = false;
 

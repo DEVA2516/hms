@@ -28,7 +28,7 @@ export class ReceptionistComponent {
   }
 
   ngOnInit(){
-    this.getAppointMents()
+    // this.getAppointMents()
   }
 
   get patControls() {
@@ -40,7 +40,6 @@ export class ReceptionistComponent {
       next:(res:any) => {
       console.log(res);
       if (res.success){
-        this.router.navigate(['receptionist'])
         this.apiService.successToast(res.message)
         this.patForm.reset();
       }
@@ -54,5 +53,10 @@ export class ReceptionistComponent {
         this.appointments = res.data;
       }
     })
+  }
+
+  logout( ) {
+    localStorage.clear()
+    this.router.navigate(['home1'])
   }
 }

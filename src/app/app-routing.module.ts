@@ -13,6 +13,7 @@ import { SignupComponent } from './signup/signup.component';
 import { SupportingstaffdashboardComponent } from './supportingstaffdashboard/supportingstaffdashboard.component';
 import { BillerComponent } from './biller/biller.component';
 import { Home1Component } from './home1/home1.component';
+import { AdminGuard, AuthenticationGuard, DoctorGuard, PatientGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   {
@@ -42,15 +43,18 @@ const routes: Routes = [
   },
   {
     path: 'doctor-dashboard',
-    component: DoctorDashboardComponent
+    component: DoctorDashboardComponent,
+    canActivate:[AuthenticationGuard]
   },
   {
     path: 'admin-dashboard',
-    component: AdminDashboardComponent
+    component: AdminDashboardComponent,
+    canActivate:[AuthenticationGuard]
   },
   {
     path: 'patient-dashboard',
     component: PatientDashboardComponent,
+    canActivate:[AuthenticationGuard]
   },
   {
     path: 'billing-dashboard',
@@ -59,6 +63,8 @@ const routes: Routes = [
   {
     path: 'supportingstaffdashboard',
     component: SupportingstaffdashboardComponent,
+    canActivate:[AuthenticationGuard]
+
   },
   {
     path: 'department',
@@ -66,19 +72,22 @@ const routes: Routes = [
   },
   {
     path:"admin",
-    loadChildren:() => import("./admin/admin.module")
+    loadChildren:() => import("./admin/admin.module"),
+    canActivate:[AdminGuard]
   },
   {
     path: 'doctor',
-    loadChildren:() => import("./doctor/doctor.module")
+    loadChildren:() => import("./doctor/doctor.module"),
+    canActivate:[DoctorGuard]
   },
   {
     path: 'patient',
-    loadChildren:() => import("./patient/patient.module")
+    loadChildren:() => import("./patient/patient.module"),
+    canActivate:[PatientGuard]
   },
   {
     path :"supporting",
-    loadChildren:() => import("./supporting-staff/supporting-staff.module")
+    loadChildren:() => import("./supporting-staff/supporting-staff.module"),
   },
   {
     path:'biller',
@@ -89,6 +98,10 @@ const routes: Routes = [
     component:Home1Component,
   },
 
+  {
+    path :"**",
+    loadComponent:() => import("./page-not-found/page-not-found.component")
+  }
 
   
 ];

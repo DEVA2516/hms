@@ -46,7 +46,8 @@ export class SupportingstaffdashboardComponent {
         next: (res: any) => {
           this.message = res.message;
           if (res.success) {
-            this.router.navigate(['receptionist'])
+            this.router.navigate(['supporting/receptionist'])
+            localStorage.setItem("token",res.data.token)
             this.apiService.successToast(res.message)
           }
         }, error: (err: any) => this.apiService.errorToast(err.error.message)
@@ -58,7 +59,8 @@ export class SupportingstaffdashboardComponent {
         next: (res: any) => {
           this.message = res.message;
           if (res.success) {
-            this.router.navigate(['nurse'])
+            this.router.navigate(['supporting/nurse'])
+            localStorage.setItem("token",res.data.token)
             this.apiService.successToast(res.message)
           }
         }, error: (err: any) => this.apiService.errorToast(err.error.message)
@@ -70,8 +72,8 @@ export class SupportingstaffdashboardComponent {
         next: (res: any) => {
           this.message = res.message;
           if (res.success) {
+            localStorage.setItem("token",res.data.token)
             this.router.navigate(['biller'])
-            this.apiService.successToast(res.message)
           }
         }, error: (err: any) => this.apiService.errorToast(err.error.message)
       })

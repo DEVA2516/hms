@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../api.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ApiService } from 'src/app/api.service';
 
 @Component({
   selector: 'app-nurse',
@@ -97,6 +97,11 @@ export class NurseComponent implements OnInit {
       error: (err: any) => this.apiService.errorToast(err.error.message)
     })
 
+  }
+
+  logout( ) {
+    localStorage.clear()
+    this.router.navigate(['home1'])
   }
 
  

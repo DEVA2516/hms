@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../api.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Token } from '@angular/compiler';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -27,7 +28,8 @@ adminForm : FormGroup;
       next:(res:any) => {
       this.message = res.message;
       if(res.success){
-        this.router.navigate(['admin'])
+        localStorage.setItem('token',res.data.token)
+        this.router.navigate(['admin'])   
         this.apiService.successToast(res.message);
       }
     },error:(err:any) => this.apiService.errorToast(err.error.message)

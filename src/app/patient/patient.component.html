@@ -6,7 +6,7 @@
         <!-- <button pButton label="BILLS" (click)="isViewBill=!isViewBill"> </button> -->
         <button pButton label="BOOK APPOINTMENT" (click)="isAppoint = true"> </button>
         <button pButton label="APPOINTMENT LIST" (click)="isAppointView = !isAppointView"> </button>
-        <button pButton label="LOGOUT" routerLink="/home1"> </button>
+        <button pButton label="LOGOUT" (click)="logout()"> </button>
     </div>
 
     <div class="tabdiv">
@@ -207,7 +207,7 @@
 
                 <label for="date">Date</label>
 
-                <p-calendar formControlName="date" inputId="date" [showIcon]="true"></p-calendar>
+                <p-calendar formControlName="date" [minDate]="minDate" inputId="date" [showIcon]="true"></p-calendar>
 
                 <div class="error-indicator"
                     *ngIf="aptControls['date'].invalid && ( aptControls['date'].dirty || aptControls['date'].touched)">

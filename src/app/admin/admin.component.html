@@ -189,7 +189,8 @@
 
       <div class="form-group">
         <label for="docdept"> Department </label>
-        <input type="text" name="docdept" id="docdept" pInputText placeholder="enter the department" formControlName="docdept">
+        <p-dropdown [options]="department"  optionLabel="dname" name="type" optionValue="dname" placeholder="--select--"
+          formControlName="docdept"></p-dropdown>
 
         <div class="error-indicator"
           *ngIf="docControls['docdept'].invalid && (docControls['docdept'].dirty || docControls['docdept'].touched)">
@@ -243,7 +244,7 @@
 
         <div class="form-group">
           <label for="amt">Salary Credited Date </label>
-          <p-calendar formControlName="creditDate" dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
+          <p-calendar formControlName="creditDate" [minDate]="minDate" dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
         </div>
 
       <button pButton label="Submit" [disabled]="docSalaryForm.invalid" (click)="updateSalary()"></button>

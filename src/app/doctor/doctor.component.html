@@ -5,7 +5,7 @@
     <button pButton label="DISCHARGE SUMMARY" (click)="isViewSummary = !isViewSummary"></button>
     <button pButton label="SALARY STATUS" (click)="isViewSalary = !isViewSalary"> </button>
     <button pButton label="APPOINTMENT LIST" (click)="isAppointView = !isAppointView"> </button>
-    <button pButton label="LOGOUT" routerLink="/home1"> </button>
+    <button pButton label="LOGOUT" (click)="logout()"> </button>
   </div>
 
   <p-sidebar [(visible)]="display" position="right" [showCloseIcon]='true'>

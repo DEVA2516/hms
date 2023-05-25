@@ -35,7 +35,6 @@ export class DoctorComponent implements OnInit {
     this.getDoctorById();
     this.getSummary();
     this.getAppointMentsById();
-    this.docId = localStorage.getItem("doctorId") ?? "";
   }
 
   get docControls() {
@@ -43,8 +42,7 @@ export class DoctorComponent implements OnInit {
   }
 
   getDoctorById() {
-    let id = String(localStorage.getItem("doctorId"));
-    this.apiService.getDoctorById(id).subscribe({
+    this.apiService.getDoctorById().subscribe({
       next: (res: any) => {
         this.docForm.patchValue({
           docname: res.data.docname,
@@ -60,8 +58,7 @@ export class DoctorComponent implements OnInit {
   }
 
   getDoctorSalaryId() {
-    let id = String(localStorage.getItem("doctorName"));
-    this.apiService.getDocSalary(id).subscribe({
+    this.apiService.getDocSalary().subscribe({
       next: (res: any) => {
         this.salarys = res.data;
       },
@@ -89,12 +86,16 @@ export class DoctorComponent implements OnInit {
   }
 
   getAppointMentsById() {
-    let id = localStorage.getItem("doctorName") as string;
-    this.apiService.getAppointMentsByDoctorId(id).subscribe({
+    this.apiService.getAppointMentsByDoctorId().subscribe({
       next: (res: any) => {
         this.appointmentList = res.data;
       },
       error: (err: any) => this.apiService.errorToast(err.error.message),
     });
+  }
+
+  logout() {
+    localStorage.clear();
+    this.router.navigate(['home1']);
   }
 }
